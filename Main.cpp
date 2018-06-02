@@ -1,8 +1,12 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <string>
+
 #include "Node.h"
 #include "City.h"
+#include "Problem.h"
+
 
 using std::endl;
 using std::cout;
@@ -10,6 +14,7 @@ using std::vector;
 using std::sort;
 
 int main(int argc, char* argv[]) {
+/**
 	vector<City*> cities;
 	
 	cities.push_back(new City(5, 5, 1));
@@ -35,5 +40,22 @@ int main(int argc, char* argv[]) {
 		cout << cities[i]->ToString() << endl;
 	}
 	cout << endl;
+
+**/
+  std::string filename;
+
+  if(argc ==1)
+  {
+    std::cout << "Pleaes Enter the filename: ";
+    std::cin >> filename;
+  }
+
+  else
+  {
+    filename = argv[1];
+
+  }
+
+
 	return 0;
 }

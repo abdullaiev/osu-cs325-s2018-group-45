@@ -9,6 +9,8 @@
 #include <math.h>
 
 #include "SolveTSP.h"
+#include "SpatialTree.h"
+
 
 /**************************************
  * Constructor and Destructor
@@ -53,10 +55,12 @@ int SolveTSP::distance(City* A, City* B){
 
 void SolveTSP::NN(Tour* tour){
   // Grab a starting City from the Spatial Tree
+  SpatialTree tree;
+  
   
   // Add City to tour (make sure city nodes are pointing to null)
   
-  // While all cities have not been visisted
+  // While(tree.AllVisitied())
   
 	// GetNextNearest
 	// Add city to tour

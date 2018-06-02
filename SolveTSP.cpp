@@ -114,11 +114,27 @@ void 2opt(Tour* tour, int size)
 **/
 
 
+/**
+void 2optSwap(Tour* tour, int i, int k)
+{
+  int D = 0; 
+  int inc = 0;
+  for(int s=i; s<=k; ++s)
+  {
+    D += distance(s-1, k-inc)
+    inc++;
+  }
 
+  // Finds the current lenght of the section from i to k
+  distanceCur = tourLength(i, k);
 
+  if(D < distanceCur)
+  {
+    // redirect the cities to point to the correct cities
 
+  }
 
-
-
+}
+**/
 
 

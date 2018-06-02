@@ -26,16 +26,13 @@ class SolveTSP{
 	SolveTSP();
 	~SolveTSP();
 
-	// Internal Functions run:  *NOTE: maybe make private
-
 	// called in Main.cpp
 	void solve2OPT(std::string);   // going to call Problem and then solve using NN and 2-opt
-
 
 	int distance(City* A, City* B);		// Calculates Distance between City A and City B
 	
 //	void 2opt(Tour*, int);		// Receives a Complete Tour, # of cities in tour.
-//	void 2optSwap(Tour*, int, int);
+//	bool 2optSwap(Tour*, int, int);
 
 	
 	

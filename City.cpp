@@ -4,11 +4,14 @@
  * 
  * Implementation for the City class
  ****************************************/
+#include <string>
+#include <math.h>
+
 #include "City.h"
 
-#include <string>
 using std::string;
 using std::to_string;
+
 
 City::City(int id, int x, int y) {
 	this->id = id;
@@ -31,4 +34,10 @@ bool City::CompareY(const City* lhs, const City* rhs){
 
 bool City::CompareID(const City* lhs, const City* rhs){
 	return lhs->id < rhs->id;
+}
+
+int City::DistanceTo(const City* city) {
+	int xDiff = this->xCoord - city->xCoord;
+	int yDiff = this->yCoord - city->yCoord;
+	return sqrt(xDiff*xDiff + yDiff*yDiff);
 }

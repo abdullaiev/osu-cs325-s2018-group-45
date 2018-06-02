@@ -6,14 +6,22 @@
 #include "Node.h"
 #include "City.h"
 #include "Problem.h"
+<<<<<<< HEAD
 #include "SolveTSP.h"
+=======
+#include "Solution.h"
+#include "TSPExactSolver.h"
+>>>>>>> 11ffff1b872845e09de66036fe279636670bef3a
 
 using std::endl;
 using std::cout;
 using std::vector;
 using std::sort;
+using std::string;
+using std::cout;
+using std::cin;
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 /**
 	vector<City*> cities;
 	
@@ -42,6 +50,7 @@ int main(int argc, char* argv[]) {
 	cout << endl;
 
 **/
+<<<<<<< HEAD
   std::string filename;
  
 
@@ -58,6 +67,27 @@ int main(int argc, char* argv[]) {
 
   SolveTSP problem;
   problem.solve2OPT(filename);
+=======
+    string inputFileName;
+    string outputFileName;
 
-	return 0;
+    if (argc == 1) {
+        cout << "Please enter the filename: ";
+        cin >> inputFileName;
+    } else {
+        inputFileName = argv[1];
+    }
+
+    outputFileName = inputFileName + ".tour";
+    Problem tsp(inputFileName);
+
+    if (tsp.getSize() < 10) {
+        TSPExactSolver exactTSP;
+        exactTSP.solve(tsp).write(outputFileName);
+    } else {
+        //todo: use the approximate solver
+    }
+>>>>>>> 11ffff1b872845e09de66036fe279636670bef3a
+
+    return 0;
 }

@@ -48,3 +48,7 @@ Problem::Problem(string inputFileName) {
 vector<City> Problem::getData() {
     return this->cities;
 }
+
+int Problem::getSize() {
+    return this->cities.size();
+}

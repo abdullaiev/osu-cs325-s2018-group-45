@@ -14,10 +14,14 @@ CXXFLAGS += -g
 PROGRAM = SolveTSP
 
 # Header Files 
+<<<<<<< HEAD
 HEADERS = City.h Node.h SpatialTree.h Problem.h Solution.h SolveTSP.h
+=======
+HEADERS = City.h Node.h SpatialTree.h Problem.h Solution.h TSPExactSolver.h #Tour.h SolveTSP.h
+>>>>>>> 11ffff1b872845e09de66036fe279636670bef3a
 
 # Source Files
-SOURCES = ${HEADERS:.h=.cpp} Main.cpp  
+SOURCES = ${HEADERS:.h=.cpp} Main.cpp
 
 # Object Files
 OBJECTS = ${SOURCES:.c=.o}

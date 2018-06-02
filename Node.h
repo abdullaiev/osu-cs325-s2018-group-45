@@ -16,6 +16,6 @@ public:
 	Node* right;
 	City* city;
 	bool visited;
-}
+};
 
 #endif

@@ -14,6 +14,6 @@ public:
 	int id; 
 	int xCoord;
 	int yCoord;
-}
+};
 
 #endif

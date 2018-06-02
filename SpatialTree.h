@@ -24,11 +24,15 @@ private:
 public:
 	SpatialTree();
 	SpatialTree(const vector<City*> cities);
+	~SpatialTree();
+	
 	bool AllVisited() const;
 	void ClearVisited();
 	City* GetNextNearest(City* city);
 	queue<City*> GetKNearest(City* city, int k);
-	const int Count();
+	int Count() const;
+	
+	void Print() const;
 };
 
 #endif

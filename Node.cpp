@@ -6,6 +6,32 @@
  ****************************************/
 #include "Node.h"
 
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
+Node::Node() {
+	left = NULL; 
+	right = NULL; 
+	city = NULL; 
+	visited = false;
+};
+
+Node::Node(City* city) {
+	left = NULL;
+	right = NULL;
+	this->city = city;
+	visited = false;
+};
+
+Node::~Node() {
+	if (left)
+		delete left;
+	if (right)
+		delete right;
+}
+	
 // Sets this node and all children to not-visited
 void Node::ClearVisited(bool percolate) {
 	visited = false;
@@ -23,4 +49,14 @@ bool Node::AllVisited() const {
 	if (right && !right->AllVisited())
 		return false;
 	return visited;
+}
+
+void Node::Print() const {
+	if (left)
+		left->Print();
+		
+	cout << city->ToString() << endl;
+	
+	if (right)
+		right->Print();
 }

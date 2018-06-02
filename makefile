@@ -14,7 +14,7 @@ CXXFLAGS += -g
 PROGRAM = SolveTSP
 
 # Header Files 
-HEADERS = City.h Node.h SpatialTree.h
+HEADERS = City.h Node.h SpatialTree.h Problem.h Solution.h
 
 # Source Files
 SOURCES = ${HEADERS:.h=.cpp} Main.cpp
@@ -48,4 +48,3 @@ zip:
 
 clean: 
 	rm -f ${PROGRAM} *.o *~
-

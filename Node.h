@@ -16,6 +16,11 @@ public:
 	Node* right;
 	City* city;
 	bool visited;
+	
+	Node() {left = NULL; right = NULL; city = NULL; visited = false;};
+	// Clears the visited flag for the node (and its children if percolate is true)
+	void ClearVisited(bool percolate=true);
+	bool AllVisited() const;
 };
 
 #endif

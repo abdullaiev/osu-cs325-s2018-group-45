@@ -22,11 +22,13 @@ private:
 	Node* root;
 	int size;
 public:
-	SpatialTree(vector<City*> cities);
+	SpatialTree();
+	SpatialTree(const vector<City*> cities);
+	bool AllVisited() const;
 	void ClearVisited();
 	City* GetNextNearest(City* city);
 	queue<City*> GetKNearest(City* city, int k);
-	int Count();
+	const int Count();
 };
 
 #endif

@@ -28,6 +28,7 @@ Solution TSPExactSolver::solve(Problem problem) {
     int * shortestTour;
     shortestTour = new int[size];
     int shortestDistance = -1;
+    bool NOISY = false;
 
     //Do not attempt to solve TSP if the number of vertices is less than two
     if (size < 2) {
@@ -42,16 +43,25 @@ Solution TSPExactSolver::solve(Problem problem) {
 
     //Check the path length for every permutation of the vertices
     do {
-        int currentDistance = 0;
+        int total = 0;
         for (int j = 1; j < size; j++) {
-            City city1 = problem.getData().at(j);
-            City city2 = problem.getData().at(j - 1);
-            currentDistance += city1.DistanceTo(&city2);
+            City city1 = problem.getData().at(indices[j]);
+            City city2 = problem.getData().at(indices[j - 1]);
+            int distance = city1.DistanceTo(&city2);
+            total = total + distance;
+
+            if (NOISY == true) {
+                cout << "Distance from " << indices[j] << " to " << indices[j-1] << " is " << distance << "\n";
+            }
+        }
+
+        if (NOISY == true) {
+            cout << "Distance: " << total << ". Permutation: " << indices[0] << indices[1] << indices[2] << indices[3] << '\n';
         }
 
         //If current permutation results in a shorter path than we already have, store it's distance and the sequence of vertices
-        if (currentDistance < shortestDistance || shortestDistance == -1) {
-            shortestDistance = currentDistance;
+        if (total < shortestDistance || shortestDistance == -1) {
+            shortestDistance = total;
             for (int k = 0; k < size; k++) {
                 shortestTour[k] = indices[k];
             }

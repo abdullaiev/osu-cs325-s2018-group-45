@@ -6,7 +6,7 @@
 #include "Node.h"
 #include "City.h"
 #include "Problem.h"
-
+#include "SolveTSP.h"
 
 using std::endl;
 using std::cout;
@@ -43,6 +43,7 @@ int main(int argc, char* argv[]) {
 
 **/
   std::string filename;
+ 
 
   if(argc ==1)
   {
@@ -53,9 +54,10 @@ int main(int argc, char* argv[]) {
   else
   {
     filename = argv[1];
-
   }
 
+  SolveTSP problem;
+  problem.solve2OPT(filename);
 
 	return 0;
 }

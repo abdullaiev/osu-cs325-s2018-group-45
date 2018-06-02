@@ -96,7 +96,7 @@ void 2opt(Tour* tour, int size)
     {
 	for(int k=i+1; k<size; k++)
 	{
-	  2optSwap(tour, tourNew, i, k);
+	  2optSwap(tour, i, k);
 	  distanceNew = tourNew.getLength();
     
     	  if(distanceNew < bestDistance)

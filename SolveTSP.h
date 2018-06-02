@@ -32,7 +32,7 @@ class SolveTSP{
 
 	void NN(Tour*);				// Receives a blank Tour and Fills it in
 	void 2opt(Tour*, int, Tour*);		// Receives a Complete Tour, # of cities in tour, and an empty tour.
-
+	void 2optSwap(Tour*, Tour*, int, int);
 
 	// User Interface Functions:
 

@@ -41,6 +41,7 @@ int SolveTSP::distance(City* A, City* B){
   return dist;
 };
 
+
 /********
  * Input: Pointer to a Tour Object
  * Output: Nothing
@@ -51,8 +52,17 @@ int SolveTSP::distance(City* A, City* B){
  * *****/
 
 void SolveTSP::NN(Tour* tour){
-
-
+  // Grab a starting City from the Spatial Tree
+  
+  // Add City to tour (make sure city nodes are pointing to null)
+  
+  // While all cities have not been visisted
+  
+	// GetNextNearest
+	// Add city to tour
+	
+  // Point End of back to the beginning
+  
 
 };
 
@@ -64,6 +74,36 @@ void SolveTSP::NN(Tour* tour){
  * *****/
 void 2opt(Tour* tour, int size, Tour* tourNew)
 {
+  bool improve;  // make sure improvments are being made. 
+  int distanceNew;
+  int distanceBest;
+  // tourNew = tour by calling dupicate function
+
+/**
+ // Could set the loop to check for n number of iterations without an improvment then break.
+ // EXAMPLE: while(improve < 15)  --> makes it at most check a neighborhood without any improvments
+  while(improve){
+    improve = FALSE;
+    bestDistance = tour.getLength();
+    for(int i=0; i<size-1; i++)
+    {
+	for(int k=i+1; k<size; k++)
+	{
+	  2optSwap(tour, tourNew, i, k);
+	  distanceNew = tourNew.getLength();
+    
+    	  if(distanceNew < bestDistance)
+    	  {
+	    tour = tourNew; 
+	    distanceBest = distanceNew;
+	    improve = TRUE;
+    	  }
+
+  	}
+    }
+  }  //end of while
+	
+**/
 
 
 

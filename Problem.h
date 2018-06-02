@@ -8,17 +8,19 @@
 #define OSU_CS325_S2018_GROUP_45_PROBLEM_H
 
 #include <string>
+#include <vector>
 #include "City.h"
 
 using std::string;
+using std::vector;
 
 class Problem {
 private:
-    City * cities;
+    vector<City> cities;
 
 public:
     Problem(string inputFileName);
-    City * getData();
+    vector<City> getData();
 };
 
 #endif //OSU_CS325_S2018_GROUP_45_PROBLEM_H

@@ -3,6 +3,8 @@
 #include <algorithm>
 #include "Node.h"
 #include "City.h"
+#include "Problem.h"
+#include "Solution.h"
 
 using std::endl;
 using std::cout;
@@ -37,5 +39,10 @@ int main(int argc, char* argv[]) {
 		cout << cities[i]->ToString() << endl;
 	}
 	cout << endl;
+
+
+//    Use this code to get cities vector from an input file
+//    Problem tsp("./samples/tsp_example_1.txt");
+//    cout << endl << tsp.getData().at(75).ToString() << endl;
 	return 0;
 }

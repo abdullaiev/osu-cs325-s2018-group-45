@@ -4,15 +4,26 @@
  * 
  * Implementation for the SpatialTree class
  ****************************************/
+#include <iostream>
 #include <vector>
 #include <queue>
 #include <algorithm>
 
 #include "SpatialTree.h"
 
+using std::cout;
+using std::endl;
 using std::vector;
 using std::queue;
 using std::sort;
+
+/*void DumbTree(vector<City*> cities) {
+	if (cities.size() < 1)
+		return NULL;
+
+	for (int i = 0; i < cities.size(); ++i)
+		
+}*/
 
 SpatialTree::SpatialTree() {
 	size = 0;
@@ -30,16 +41,13 @@ SpatialTree::SpatialTree(vector<City*> cities) {
 	vector<City*> citiesCopy = cities;
 	sort(cities.begin(), cities.end(), City::CompareX);
 	int iMedian = size / 2;
-	
-	
-	// Make a copy of the cities list for sorting in place
-	/*if size < 1 {
-		root = NULL;
-	} else {
-		
-	}*/
-	;
+	root = new Node(cities[iMedian]);
 };
+
+SpatialTree::~SpatialTree() {
+	if (root)
+		delete root;
+}
 
 bool SpatialTree::AllVisited() const {
 	return root && root->AllVisited();
@@ -58,6 +66,15 @@ queue<City*> SpatialTree::GetKNearest(City* city, int k) {
 	return queue<City*>();
 };
 
-const int SpatialTree::Count() {
+int SpatialTree::Count() const{
 	return size;
+}
+
+
+// Simple tree display, left justified
+void SpatialTree::Print() const{
+	if (root) 
+		return;
+	else
+		root->Print();
 }

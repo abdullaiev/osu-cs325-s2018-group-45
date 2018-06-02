@@ -17,10 +17,15 @@ public:
 	City* city;
 	bool visited;
 	
-	Node() {left = NULL; right = NULL; city = NULL; visited = false;};
+	Node();
+	Node(City* city);
+	~Node();
+	
 	// Clears the visited flag for the node (and its children if percolate is true)
 	void ClearVisited(bool percolate=true);
 	bool AllVisited() const;
+	
+	void Print() const;
 };
 
 #endif

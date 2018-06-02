@@ -22,6 +22,15 @@ SpatialTree::SpatialTree() {
 // Cities are sorted and split by alternating x/y
 SpatialTree::SpatialTree(vector<City*> cities) {
 	size = cities.size();
+	if (size < 1) {
+		root == NULL;
+		return;
+	}
+	
+	vector<City*> citiesCopy = cities;
+	sort(cities.begin(), cities.end(), City::CompareX);
+	int iMedian = size / 2;
+	
 	
 	// Make a copy of the cities list for sorting in place
 	/*if size < 1 {

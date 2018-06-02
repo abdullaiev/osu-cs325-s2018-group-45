@@ -10,8 +10,6 @@
 using std::string;
 using std::to_string;
 
-City::CompareMethod City::compareBy = CMP_ID;
-
 City::City(int id, int x, int y) {
 	this->id = id;
 	this->xCoord = x;
@@ -23,15 +21,14 @@ string City::ToString() {
 	
 };
 
-bool City::operator < (const City& other) const {
-	if (this->compareBy == CMP_X)
-		return this->xCoord < other.xCoord;
-	else if (this->compareBy == CMP_Y)
-		return this->yCoord < other.yCoord;
-	else
-		return this->id < other.id;
+bool City::CompareX(const City* lhs, const City* rhs){
+	return lhs->xCoord < rhs->xCoord;
 }
 
-bool City::Compare(const City* lhs, const City* rhs) {
-	return *lhs < *rhs;
+bool City::CompareY(const City* lhs, const City* rhs){
+	return lhs->yCoord < rhs->yCoord;
+}
+
+bool City::CompareID(const City* lhs, const City* rhs){
+	return lhs->id < rhs->id;
 }

@@ -18,21 +18,19 @@ int main(int argc, char* argv[]) {
 	cities.push_back(new City(2, 2, 5));
 	cities.push_back(new City(1, 4, 4));
 	
-	sort(cities.begin(), cities.end(), City::Compare);
+	sort(cities.begin(), cities.end(), City::CompareID);
 	for (int i = 0; i < cities.size(); ++i) {
 		cout << cities[i]->ToString() << endl;
 	}
 	cout << endl;
 	
-	City::CompareByX();
-	sort(cities.begin(), cities.end(), City::Compare);
+	sort(cities.begin(), cities.end(), City::CompareX);
 	for (int i = 0; i < cities.size(); ++i) {
 		cout << cities[i]->ToString() << endl;
 	}
 	cout << endl;
 	
-	City::CompareByY();
-		sort(cities.begin(), cities.end(), City::Compare);
+		sort(cities.begin(), cities.end(), City::CompareY);
 	for (int i = 0; i < cities.size(); ++i) {
 		cout << cities[i]->ToString() << endl;
 	}

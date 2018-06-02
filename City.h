@@ -30,15 +30,10 @@ public:
 	City(int id, int x, int y);
 	string ToString();
 
-	// These are used to switch comparison from by x to by y
-private:
-	enum CompareMethod {CMP_X, CMP_Y, CMP_ID};
-	static CompareMethod compareBy;
 public:
-	static void CompareByX() {compareBy = CMP_X;};
-	static void CompareByY() {compareBy = CMP_Y;};
-	static void CompareByID() {compareBy = CMP_ID;};
-	static bool Compare(const City* lhs, const City* rhs);
+	static bool CompareX(const City* lhs, const City* rhs);
+	static bool CompareY(const City* lhs, const City* rhs);
+	static bool CompareID(const City* lhs, const City* rhs);
 };
 
 

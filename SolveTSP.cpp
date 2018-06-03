@@ -49,19 +49,26 @@ Solution SolveTSP::solveNN(Problem problem) {
     tour.push_back(allCities.at(0));
     allCities.at(0)->visited = true;
     int totalDistance = 0;
+    bool NOISY = false;
 
-    cout << "Size: " << size << "\n";
+    if (NOISY) {
+        cout << "Size: " << size << "\n";
+    }
 
     for (int i = 0; i < size; i++) {
         int nearestNeighborDistance = -1;
         int nearestNeighborIndex = -1;
 
-        cout << "Iteration: " << i << "\n";
+        if (NOISY) {
+            cout << "Iteration: " << i << "\n";
+        }
 
         for (int j = 0; j < size; j++) {
             City * potentialNeighbor = allCities.at(j);
-            cout << "potentialNeighbor: " << potentialNeighbor->id << ". Visited:  " << potentialNeighbor->visited
-                 << "\n";
+
+            if (NOISY) {
+                cout << "potentialNeighbor: " << potentialNeighbor->id << ". Visited:  " << potentialNeighbor->visited << "\n";
+            }
 
             if (potentialNeighbor->visited) {
                 continue;
@@ -70,8 +77,9 @@ Solution SolveTSP::solveNN(Problem problem) {
             City * currentCity = allCities.at(i);
             int distanceToCity = currentCity->DistanceTo(potentialNeighbor);
 
-            cout << "currentCity: " << currentCity->id << ". Distance to potential neighbor:  " << distanceToCity
-                 << "\n";
+            if (NOISY) {
+                cout << "currentCity: " << currentCity->id << ". Distance to potential neighbor:  " << distanceToCity << "\n";
+            }
 
             if (nearestNeighborDistance == -1 || nearestNeighborDistance > distanceToCity) {
                 nearestNeighborDistance = distanceToCity;
@@ -79,10 +87,16 @@ Solution SolveTSP::solveNN(Problem problem) {
             }
         }
 
-        City *nextNeighbor = allCities.at(nearestNeighborIndex);
-        nextNeighbor->visited = true;
-        tour.push_back(nextNeighbor);
-        totalDistance = totalDistance + nearestNeighborDistance;
+        if (NOISY) {
+            cout << "Nearest neighbor index: " << nearestNeighborIndex << "\n";
+        }
+
+        if (nearestNeighborIndex != -1) {
+            City *nextNeighbor = allCities.at(nearestNeighborIndex);
+            nextNeighbor->visited = true;
+            tour.push_back(nextNeighbor);
+            totalDistance = totalDistance + nearestNeighborDistance;
+        }
     }
 
     Solution solution(totalDistance, tour);

@@ -14,28 +14,30 @@
 #include "City.h"
 //#include "Tour.h"
 #include "Node.h"
+#include "Solution.h"
+#include "Problem.h"
 
-class SolveTSP{
 
-  private:
-	std::vector<City> cities;
+class SolveTSP {
 
-  public:
+private:
+    std::vector <City> cities;
 
-	// Constructor and Destructor
-	SolveTSP();
-	~SolveTSP();
+public:
 
-	// called in Main.cpp
-	void solve2OPT(std::string);   // going to call Problem and then solve using NN and 2-opt
+    // Constructor and Destructor
+    SolveTSP();
 
-	int distance(City* A, City* B);		// Calculates Distance between City A and City B
-	
+    ~SolveTSP();
+
+    // called in Main.cpp
+    void solve2OPT(std::string);   // going to call Problem and then solve using NN and 2-opt
+    Solution solveNN(Problem problem);
+
+    int distance(City *A, City *B);        // Calculates Distance between City A and City B
+
 //	void 2opt(Tour*, int);		// Receives a Complete Tour, # of cities in tour.
 //	bool 2optSwap(Tour*, int, int);
-
-	
-	
 };
 
 #endif

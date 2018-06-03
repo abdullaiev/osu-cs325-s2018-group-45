@@ -69,12 +69,13 @@ int main(int argc, char *argv[]) {
     Problem tsp(inputFileName);
 
     //Use the exact algorithm for small size problems
-    if (tsp.getSize() <= 10) {
+    if (tsp.getSize() < 10) {
         TSPExactSolver exactTSP;
         exactTSP.solve(tsp).write(outputFileName);
     } else {
-//        SolveTSP solveTSP;
-//        solveTSP.solve2OPT(inputFileName);
+        //Use Nearest Neighbor + 2-OPT for bigger problems
+        SolveTSP solveTSP;
+        solveTSP.solveNN(tsp).write(outputFileName);
     }
 
     //Print execution time

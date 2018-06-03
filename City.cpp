@@ -17,6 +17,7 @@ City::City(int id, int x, int y) {
 	this->id = id;
 	this->xCoord = x;
 	this->yCoord = y;
+	this->visited = false;
 };
 
 string City::ToString() {

@@ -8,11 +8,15 @@
 
 #include <math.h>
 #include <queue>
+#include <vector>
 
 
 #include "SolveTSP.h"
 #include "SpatialTree.h"
 #include "Problem.h"
+
+using std::vector;
+
 
 /**************************************
  * Constructor and Destructor
@@ -35,9 +39,44 @@ void SolveTSP::solve2OPT(std::string filename)
 {
   Problem Prob(filename);
   std::vector<City> cities = Prob.getData();
+}
 
+//This is not working
+Solution SolveTSP::solveNN(Problem problem) {
+  int size = problem.getSize();
+  vector<City> allCities = problem.getData();
+  vector<City> tour;
+  tour.push_back(allCities.at(0));
+  int totalDistance = 0;
+  
+  for (int i = 0; i < size; i++) {
+    int nearestNeighborDistance = -1;
+    int nearestNeighborIndex = -1;
+    
+    for (int j = 1; j < size; j++) {
+      City potentialNeighbor = allCities.at(j);
 
+      if (potentialNeighbor.visited) {
+        continue;
+      }
 
+      City currentCity = allCities.at(i);
+      int distanceToCity = currentCity.DistanceTo(&potentialNeighbor);
+      
+      if (nearestNeighborDistance == -1 || nearestNeighborDistance > distanceToCity) {
+        nearestNeighborDistance = distanceToCity;
+        nearestNeighborIndex = j;
+      }
+    }
+    
+    City nextNeighbor = allCities.at(nearestNeighborIndex);
+    nextNeighbor.visited = true;
+    tour.push_back(nextNeighbor);
+    totalDistance = totalDistance + nearestNeighborDistance;
+  }
+  
+  Solution solution(totalDistance, tour);
+  return solution;
 }
 
 

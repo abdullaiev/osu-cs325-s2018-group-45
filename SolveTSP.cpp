@@ -35,6 +35,7 @@ SolveTSP::~SolveTSP() {
 /**************************************
  * Internal Functions
  * ************************************/
+/* Going to Serve as the main solve function that brings together the solution */
 
 void SolveTSP::solve2OPT(std::string filename) {
     Problem Prob(filename);

@@ -8,6 +8,7 @@
 #include <vector>
 #include <queue>
 #include <algorithm>
+#include <string>
 
 #include "SpatialTree.h"
 
@@ -16,6 +17,7 @@ using std::endl;
 using std::vector;
 using std::queue;
 using std::sort;
+using std::string;
 
 /*void DumbTree(vector<City*> cities) {
 	if (cities.size() < 1)
@@ -28,11 +30,16 @@ using std::sort;
 SpatialTree::SpatialTree() {
 	size = 0;
 	root = NULL;
+	
 }
 // Build a tree from a list of cities.
 // Cities are sorted and split by alternating x/y
 SpatialTree::SpatialTree(vector<City*> cities) {
 	size = cities.size();
+	vector<City*> data;
+	
+	
+	
 	if (size < 1) {
 		root == NULL;
 		return;
@@ -40,8 +47,14 @@ SpatialTree::SpatialTree(vector<City*> cities) {
 	
 	vector<City*> citiesCopy = cities;
 	sort(cities.begin(), cities.end(), City::CompareX);
-	int iMedian = size / 2;
-	root = new Node(cities[iMedian]);
+	int iMid = size / 2;
+	root = new SpatialNode(cities[iMid]);
+	
+	int iLow = 0;
+	int iHigh = size;
+	
+	
+		
 };
 
 SpatialTree::~SpatialTree() {
@@ -73,8 +86,7 @@ int SpatialTree::Count() const{
 
 // Simple tree display, left justified
 void SpatialTree::Print() const{
-	if (root) 
+	if (!root)
 		return;
-	else
-		root->Print();
+	root->Print();
 }

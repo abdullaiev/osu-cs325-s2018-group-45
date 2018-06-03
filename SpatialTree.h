@@ -19,7 +19,7 @@ using std::queue;
 // in nearest neighbor selections
 class SpatialTree {
 private:
-	Node* root;
+	SpatialNode* root;
 	int size;
 public:
 	SpatialTree();

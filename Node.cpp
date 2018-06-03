@@ -7,25 +7,37 @@
 #include "Node.h"
 
 #include <iostream>
+#include <string>
+#include <vector>
 
 using std::cout;
 using std::endl;
+using std::string;
+using std::vector;
 
-Node::Node() {
+SpatialNode::SpatialNode() {
 	left = NULL; 
 	right = NULL; 
 	city = NULL; 
 	visited = false;
 };
 
-Node::Node(City* city) {
+SpatialNode::SpatialNode(City* city) {
 	left = NULL;
 	right = NULL;
 	this->city = city;
 	visited = false;
 };
 
-Node::~Node() {
+// Populate the node with cities 
+SpatialNode::SpatialNode(vector<City*> cities, SplitDim dim) {
+	left = NULL;
+	right = NULL;
+	city = NULL;
+	visited = false;
+}
+
+SpatialNode::~SpatialNode() {
 	if (left)
 		delete left;
 	if (right)
@@ -33,7 +45,7 @@ Node::~Node() {
 }
 	
 // Sets this node and all children to not-visited
-void Node::ClearVisited(bool percolate) {
+void SpatialNode::ClearVisited(bool percolate) {
 	visited = false;
 	if (percolate) {
 		if (left)
@@ -43,7 +55,7 @@ void Node::ClearVisited(bool percolate) {
 	}
 }
 
-bool Node::AllVisited() const {
+bool SpatialNode::AllVisited() const {
 	if (left && !left->AllVisited())
 		return false;
 	if (right && !right->AllVisited())
@@ -51,12 +63,20 @@ bool Node::AllVisited() const {
 	return visited;
 }
 
-void Node::Print() const {
-	if (left)
-		left->Print();
-		
-	cout << city->ToString() << endl;
+int SpatialNode::Print(int offset) const {
+	if (left) {
+		offset = left->Print(offset);
+		offset += 2;
+	}
+
+	cout << string(offset, ' ') << city->ToString() << endl;
 	
-	if (right)
-		right->Print();
+	if (right) {
+		offset -= 2;
+		offset = right->Print(offset);
+		offset += 2;
+	}
+	return offset;
 }
+
+	

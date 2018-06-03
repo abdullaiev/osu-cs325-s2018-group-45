@@ -22,10 +22,9 @@ public:
 	int id; 
 	int xCoord;
 	int yCoord;
-	
-	
-	// override < operator for sorting by x or y
-	bool operator < (const City& other) const;
+	City* next;
+	City* prev;
+	bool visited;
 	
 	City(int id, int x, int y);
 	string ToString();

@@ -23,10 +23,23 @@ using std::istream_iterator;
 using std::cout;
 
 Problem::Problem(string inputFileName) {
+    bool status = true;
     vector<City *> cities;
     this->cities = cities;
     ifstream input(inputFileName);
 
+  // Verify file was found and can be accessed
+  if(input){
+    std::cout << inputFileName <<" - Opened Successfully." << std::endl;
+  }
+
+  else{
+    std::cout << inputFileName << " - could NOT access file." << std::endl;
+    status = false;
+  }
+
+  if(status == true)
+  {
     //Read input file line by line
     for(string line; getline(input, line);) {
         //Split each line into tokens delimited by a space
@@ -44,6 +57,7 @@ Problem::Problem(string inputFileName) {
         City * city = new City(id, x, y);
         this->cities.push_back(city);
     }
+  }
 }
 
 vector<City *> Problem::getData() {

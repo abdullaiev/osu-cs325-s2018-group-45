@@ -34,6 +34,7 @@ public:
     void solve2OPT(std::string);   // going to call Problem and then solve using NN and 2-opt
     Solution solveNN(Problem problem);
 
+    bool verifyApprox(std::vector<City*>, int);
     int distance(City *A, City *B);        // Calculates Distance between City A and City B
 
 //	void 2opt(Tour*, int);		// Receives a Complete Tour, # of cities in tour.

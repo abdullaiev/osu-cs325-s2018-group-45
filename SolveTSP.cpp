@@ -112,9 +112,60 @@ Solution SolveTSP::solveNN(Problem problem) {
         }
     }
 
+    // CAN DELETE, JUST TESTING
+    bool status = verifyApprox(tour, tour.Count());
+    if(status)
+ 	std::cout << "Distances are less than 25% different, GOOD TO GO" << std::endl;
+    else
+	std::cout << "Distances are greater than 25% difference, Change Starting Point." << std::endl; 
+
+
     Solution solution(totalDistance, tour);
     return solution;
 }
+
+
+/******************
+ * Verifies that the approximation made by NN is somewhat accurate
+ * 	by checking the first few lenghts vs the last few lengths.
+ * 	If lengths are greater than 25% different, then may want to 
+ * 	choose a different starting point for NN
+ *
+ * ***************/
+
+bool verifyApprox(std::vector<City*> tour, int size)
+{
+  bool status = FALSE:
+  int lengthBeg = 0;
+  int lengthEnd = 0;
+  int approxAve = 0;
+  
+  // Note: sizes under 10 will be run with the Exact Solution
+  if(size > 10)
+  {
+    for(int i=0; i<3; i++)
+    {    
+	lengthBeg += tour[i]->DistanceTo(tour[i-1]);
+    }
+    for(int i=size-1; i>size-4; i--)
+    {
+	lengthEnd += tour[i]->DistanceTo(tour[i-1]);
+    }
+    
+    // Verifies that the percentage difference is under 25 
+    approxAve = abs(lengthBeg-lengthEnd)/lengthEnd*100;
+    if(approxAve < 25)
+    {
+	status = TRUE;
+    }
+
+  }
+
+  else {status = TRUE;}
+
+  return status;
+}
+
 
 
 /********

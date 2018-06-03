@@ -21,7 +21,7 @@ private:
     vector<City *> tour;
 
 public:
-    Solution(int distance, vector<City *> tour);
+    Solution(long distance, vector<City *> tour);
     void write(string fileName);
 };
 

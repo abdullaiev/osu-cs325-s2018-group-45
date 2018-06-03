@@ -27,7 +27,7 @@ Solution TSPExactSolver::solve(Problem problem) {
     indices = new int[size];
     int * shortestTour;
     shortestTour = new int[size];
-    int shortestDistance = -1;
+    long shortestDistance = -1;
     bool NOISY = false;
 
     //Do not attempt to solve TSP if the number of vertices is less than two

@@ -48,7 +48,7 @@ Solution SolveTSP::solveNN(Problem problem) {
     vector < City * > tour;
     tour.push_back(allCities.at(0));
     allCities.at(0)->visited = true;
-    int totalDistance = 0;
+    long totalDistance = 0;
     bool NOISY = false;
 
     if (NOISY) {
@@ -64,6 +64,10 @@ Solution SolveTSP::solveNN(Problem problem) {
         }
 
         for (int j = 0; j < size; j++) {
+            if (i == j) {
+                continue;
+            }
+
             City * potentialNeighbor = allCities.at(j);
 
             if (NOISY) {
@@ -87,15 +91,17 @@ Solution SolveTSP::solveNN(Problem problem) {
             }
         }
 
-        if (NOISY) {
-            cout << "Nearest neighbor index: " << nearestNeighborIndex << "\n";
-        }
-
         if (nearestNeighborIndex != -1) {
             City *nextNeighbor = allCities.at(nearestNeighborIndex);
             nextNeighbor->visited = true;
             tour.push_back(nextNeighbor);
             totalDistance = totalDistance + nearestNeighborDistance;
+
+            if (NOISY) {
+                cout << "Nearest neighbor index: " << nearestNeighborIndex << "\n";
+                cout << "Nearest neighbor distance: " << nearestNeighborDistance << "\n";
+                cout << "Running total: " << totalDistance << "\n";
+            }
         }
     }
 

@@ -1,10 +1,8 @@
 #########################################################
-
 # CS 325 - Project Makefile
-
 # Group 45
-
 #########################################################
+
 
 CXX = g++ -std=c++11
 
@@ -13,15 +11,12 @@ CXXFLAGS += -pedantic-errors
 CXXFLAGS += -g
 
 # Program Name
-
 PROGRAM = SolveTSP
 
-# Header Files 
-
-HEADERS = City.h Node.h SpatialTree.h Problem.h Solution.h Tour.h SolveTSP.h TSPExactSolver.h
+# Header Files
+HEADERS = City.h Node.h SpatialTree.h Problem.h Solution.h TSPExactSolver.h SolveTSP.h
 
 # Source Files
-
 SOURCES = ${HEADERS:.h=.cpp} Main.cpp
 
 # Object Files
@@ -33,18 +28,16 @@ DOCUMENTS = README.txt
 # ZIP File
 ZIP = CS325_group45_${PROGRAM}.zip
 
+
 default:
 	${CXX} ${SOURCES} ${HEADERS} -o ${PROGRAM}
 
 all:
 	${CXX} ${CXXFLAGS} ${SOURCES} ${HEADERS} -o ${PROGRAM}
 
-
-
 # Executable dependencies
 ${PROGRAM} : ${OBJECTS} ${HEADERS}
 	${CXX} ${OBJECTS} -o ${PROGRAM}
-
 
 # Object file dependencies
 ${OBJECTS}: ${SOURCES}
@@ -55,3 +48,6 @@ zip:
 
 clean: 
 	rm -f ${PROGRAM} *.o *~
+
+clear tour:
+	rm -f $(PROGRAM) *.o *~ *.test-tour

@@ -16,11 +16,11 @@ using std::vector;
 
 class Problem {
 private:
-    vector<City> cities;
+    vector<City *> cities;
 
 public:
     Problem(string inputFileName);
-    vector<City> getData();
+    vector<City *> getData();
     int getSize();
 };
 

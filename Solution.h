@@ -18,10 +18,10 @@ using std::vector;
 class Solution {
 private:
     long distance;
-    vector<City> tour;
+    vector<City *> tour;
 
 public:
-    Solution(int distance, vector<City> tour);
+    Solution(long distance, vector<City *> tour);
     void write(string fileName);
 };
 

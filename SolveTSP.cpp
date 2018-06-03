@@ -8,21 +8,26 @@
 
 #include <math.h>
 #include <queue>
-
+#include <vector>
+#include <iostream>
 
 #include "SolveTSP.h"
 #include "SpatialTree.h"
 #include "Problem.h"
 
+using std::vector;
+using std::cout;
+
+
 /**************************************
  * Constructor and Destructor
  * ************************************/
 
-SolveTSP::SolveTSP(){
+SolveTSP::SolveTSP() {
 
 }
 
-SolveTSP::~SolveTSP(){
+SolveTSP::~SolveTSP() {
 
 }
 
@@ -31,20 +36,84 @@ SolveTSP::~SolveTSP(){
  * Internal Functions
  * ************************************/
 
-void SolveTSP::solve2OPT(std::string filename)
-{
-  Problem Prob(filename);
-  std::vector<City> cities = Prob.getData();
-
-
-
+void SolveTSP::solve2OPT(std::string filename) {
+    Problem Prob(filename);
+    //std::vector < City * > cities = Prob.getData();
+   
+    // Nearest Neighbor currently returns a Solution, but when 2OPT is working
+    // 		maybe have it return a tour so it can just then be fed right into 
+    // 		the 2opt function call and if desired sent to a Solution Object (outside of solveNN)
+    Solution nnSolution = solveNN(Prob);
+    nnSolution.write(filename); 
 }
 
+//This is not working
+Solution SolveTSP::solveNN(Problem problem) {
+    int size = problem.getSize();
+    vector < City * > allCities = problem.getData();
+    vector < City * > tour;
+    tour.push_back(allCities.at(0));
+    allCities.at(0)->visited = true;
+    long totalDistance = 0;
+    bool NOISY = false;
 
+    if (NOISY) {
+        cout << "Size: " << size << "\n";
+    }
 
+    for (int i = 0; i < size; i++) {
+        int nearestNeighborDistance = -1;
+        int nearestNeighborIndex = -1;
 
+        if (NOISY) {
+            cout << "Iteration: " << i << "\n";
+        }
 
+        for (int j = 0; j < size; j++) {
+            if (i == j) {
+                continue;
+            }
 
+            City * potentialNeighbor = allCities.at(j);
+
+            if (NOISY) {
+                cout << "potentialNeighbor: " << potentialNeighbor->id << ". Visited:  " << potentialNeighbor->visited << "\n";
+            }
+
+            if (potentialNeighbor->visited) {
+                continue;
+            }
+
+            City * currentCity = allCities.at(i);
+            int distanceToCity = currentCity->DistanceTo(potentialNeighbor);
+
+            if (NOISY) {
+                cout << "currentCity: " << currentCity->id << ". Distance to potential neighbor:  " << distanceToCity << "\n";
+            }
+
+            if (nearestNeighborDistance == -1 || nearestNeighborDistance > distanceToCity) {
+                nearestNeighborDistance = distanceToCity;
+                nearestNeighborIndex = j;
+            }
+        }
+
+        if (nearestNeighborIndex != -1) {
+            City *nextNeighbor = allCities.at(nearestNeighborIndex);
+            nextNeighbor->visited = true;
+            tour.push_back(nextNeighbor);
+            totalDistance = totalDistance + nearestNeighborDistance;
+
+            if (NOISY) {
+                cout << "Nearest neighbor index: " << nearestNeighborIndex << "\n";
+                cout << "Nearest neighbor distance: " << nearestNeighborDistance << "\n";
+                cout << "Running total: " << totalDistance << "\n";
+            }
+        }
+    }
+
+    Solution solution(totalDistance, tour);
+    return solution;
+}
 
 
 /********
@@ -55,11 +124,11 @@ void SolveTSP::solve2OPT(std::string filename)
  * 	between 2 City Objects and rounds to the 
  * 	nearest integer.
  * *****/
-int SolveTSP::distance(City* A, City* B){
-  double dist;
-  dist = sqrt((B->xCoord-A->xCoord)^2 + (B->yCoord-A->yCoord)^2); 
-  int roundDist = round(dist);
-  return roundDist;
+int SolveTSP::distance(City *A, City *B) {
+    double dist;
+    dist = sqrt((B->xCoord - A->xCoord) ^ 2 + (B->yCoord - A->yCoord) ^ 2);
+    int roundDist = round(dist);
+    return roundDist;
 }
 
 

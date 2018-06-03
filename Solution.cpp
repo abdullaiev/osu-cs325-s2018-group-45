@@ -17,7 +17,7 @@ using std::vector;
 using std::ofstream;
 using std::cout;
 
-Solution::Solution(int distance, vector <City> tour) {
+Solution::Solution(long distance, vector <City *> tour) {
     this->distance = distance;
     this->tour = tour;
 }
@@ -32,9 +32,11 @@ void Solution::write(string fileName) {
         outputFile << this->distance;
         outputFile << "\n";
 
+        int size = tour.size();
+
         //Then write the sequence of the cities that make a TS tour
-        for (City &city : this->tour) {
-            outputFile << city.id;
+        for (int i = 0; i < size; i++) {
+            outputFile << tour.at(i)->id;
             outputFile << "\n";
         }
 

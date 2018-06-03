@@ -9,11 +9,13 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
+using std::sort;
 
 SpatialNode::SpatialNode() {
 	left = NULL; 
@@ -29,21 +31,79 @@ SpatialNode::SpatialNode(City* city) {
 	visited = false;
 };
 
-// Populate the node with cities 
-SpatialNode::SpatialNode(vector<City*> cities, SplitDim dim) {
-	left = NULL;
-	right = NULL;
-	city = NULL;
+// Sorts the cities by X or Y, takes the median city, and recursively builds the tree on either side 
+SpatialNode::SpatialNode(City* cities[], int iMin, int iMax, SplitDim dim) {
 	visited = false;
+	left = right = NULL;
+	splitDim = dim;
+	
+	if (iMin >= iMax - 1) {
+		city = cities[iMin];
+	} else {
+		int iMed = (iMin + iMax) / 2;
+		
+		// Order by smallest to largest x or y coordinate and switch dim for child node construction
+		if (dim == SPLIT_X) {
+			sort(cities + iMin, cities + iMax, City::CompareX);
+			dim = SPLIT_Y;
+		} else {
+			sort(cities + iMin, cities + iMax, City::CompareY);
+			dim = SPLIT_X;
+		}
+		
+		// Assign the median city as this node's city. Then build left and right
+		city = cities[iMed];
+		if (iMin <= iMed)
+			left  = new SpatialNode(cities, iMin, iMed, dim); 
+		if (iMed <= iMax)
+			right = new SpatialNode(cities, iMed + 1, iMax, dim);
+	}
 }
 
+// Recursively deletes child nodes before self-deletion
 SpatialNode::~SpatialNode() {
 	if (left)
 		delete left;
 	if (right)
 		delete right;
 }
+
+// Return the nearest neighbor to the given node that hasn't been visited
+// If the left tree contains the city, the left-most of the right tree must be checked since it could be closer
+// Same for the right tree
+City* SpatialNode::GetNextNearest(const City* city) {
+	int thisVal;
+	int thatVal;
 	
+	// Select the correct coordinate for sorting at this level
+	if (splitDim == SPLIT_X) {
+		thisVal = this->city->xCoord;
+		thatVal = city->xCoord;
+	} else {
+		thisVal = this->city->yCoord;
+		thatVal = city->yCoord;
+	}
+
+	// Check if it belongs in the left subtree
+	if (thatVal < thisVal) {
+		// Get the nearest of the left subtree and compare it to the left-most of the right
+		if (left && !left->visited) {
+			return left->GetNextNearest(city);
+		} else if (right && !right->visited) {
+			return right->GetNextNearest(city);
+		}
+	// Its in the right subtree
+	} else {
+		if (right && !right->visited) {
+			return right->GetNextNearest(city);
+		} else if (left && !left->visited) {
+			return left->GetNextNearest(city);
+		}
+	}
+	visited = true;
+	return this->city;
+}
+
 // Sets this node and all children to not-visited
 void SpatialNode::ClearVisited(bool percolate) {
 	visited = false;
@@ -63,20 +123,27 @@ bool SpatialNode::AllVisited() const {
 	return visited;
 }
 
-int SpatialNode::Print(int offset) const {
-	if (left) {
-		offset = left->Print(offset);
-		offset += 2;
-	}
+void SpatialNode::Print() const {
+	if (left) 
+		left->Print();
 
-	cout << string(offset, ' ') << city->ToString() << endl;
+	cout << string(4 * (Depth() - 1), ' ') << city->ToString() << endl;
 	
-	if (right) {
-		offset -= 2;
-		offset = right->Print(offset);
-		offset += 2;
-	}
-	return offset;
+	if (right)
+		right->Print();
 }
 
-	
+int SpatialNode::Depth() const {
+	if (left and right){
+		if (left->Depth() > right->Depth())
+			return left->Depth() + 1;
+		else
+			return right->Depth() + 1;
+	} else if (left){
+		return left->Depth() + 1;
+	} else if (right) {
+		return right->Depth() + 1;
+	} else {
+		return 1;
+	}
+}

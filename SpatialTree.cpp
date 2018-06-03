@@ -34,27 +34,22 @@ SpatialTree::SpatialTree() {
 }
 // Build a tree from a list of cities.
 // Cities are sorted and split by alternating x/y
-SpatialTree::SpatialTree(vector<City*> cities) {
+SpatialTree::SpatialTree(const vector<City*> cities) {
 	size = cities.size();
-	vector<City*> data;
 	
-	
-	
-	if (size < 1) {
-		root == NULL;
-		return;
-	}
-	
+	// Avoid changing the order of the original list of cities
 	vector<City*> citiesCopy = cities;
-	sort(cities.begin(), cities.end(), City::CompareX);
-	int iMid = size / 2;
-	root = new SpatialNode(cities[iMid]);
 	
-	int iLow = 0;
-	int iHigh = size;
-	
-	
-		
+	// Must have at least 1 city
+	if (size < 1) {
+		cout << "No cities. Setting root to NULL..." << endl;
+		root = NULL;
+	}
+	// Recursively build the tree
+	else {
+		cout << "Building root node..." << endl;
+		root = new SpatialNode(citiesCopy.data(), 0, size, SPLIT_X);
+	}
 };
 
 SpatialTree::~SpatialTree() {
@@ -71,22 +66,33 @@ void SpatialTree::ClearVisited() {
 		root->ClearVisited();
 };
 
-City* SpatialTree::GetNextNearest(City* city) {
-	return NULL;
-};
-
-queue<City*> SpatialTree::GetKNearest(City* city, int k) {
-	return queue<City*>();
+queue<City*> SpatialTree::GetKNearest(const City* city, int k) {
+	// Limit to the number of nodes available
+	if (k >= size)
+		k = size - 1;
+	
+	queue<City*> q;
+	
+	ClearVisited();
+	for (int i = 0; i < k; ++i)
+		q.push(root->GetNextNearest(city));
+	
+	return q;
 };
 
 int SpatialTree::Count() const{
 	return size;
 }
 
+int SpatialTree::Depth() const {
+	return root->Depth();
+}
+
 
 // Simple tree display, left justified
 void SpatialTree::Print() const{
 	if (!root)
-		return;
-	root->Print();
+		cout << "The tree is empty!" << endl;
+	else
+		root->Print();
 }

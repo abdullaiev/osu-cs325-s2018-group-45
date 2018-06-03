@@ -21,7 +21,7 @@ City::City(int id, int x, int y) {
 };
 
 string City::ToString() {
-	return "City " + to_string(id) + ": (" + to_string(xCoord) + ", " + to_string(yCoord) + ")";
+	return /*"City " + to_string(id) + ": */"(" + to_string(xCoord) + ", " + to_string(yCoord) + ")";
 	
 };
 

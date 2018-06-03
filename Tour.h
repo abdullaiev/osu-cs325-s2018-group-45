@@ -15,17 +15,23 @@
 using std::vector;
 using std::queue;
 
+// Represents a continuous path of connected cities
+// Provides for getting a city or its neighbors by index
 class Tour {
 private:
 	vector<City*> cities;
 	int size;
 
 public:
-	Tour(vector<City*> cities);
+	// Guesses an initial tour, connecting the cities
+	Tour(vector<City*> cities); 
 	
-	// Get info about a city by index, including adjacent cities or visited flag
-	City* GetCity(int index) const;
-	queue<City*> GetNearest(int index, int count) const;
+	// Get a city and an arbitrary index. Not path order related
+	City* GetCity(int index) const; 
+	
+	// Return the specified number of nearest neighbor cities, limited by the total number of cities
+	queue<City*> GetNearest(int index, int count) const; 
+	
 	bool IsVisited(int index) const;
 	int Count() const;
 };

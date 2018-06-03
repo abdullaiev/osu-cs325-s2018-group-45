@@ -45,12 +45,14 @@ Solution TSPExactSolver::solve(Problem problem) {
     do {
         int total = 0;
         for (int j = 1; j < size; j++) {
-            City city1 = problem.getData().at(indices[j]);
-            City city2 = problem.getData().at(indices[j - 1]);
-            int distance = city1.DistanceTo(&city2);
+            City * city1 = problem.getData().at(indices[j]);
+            City * city2 = problem.getData().at(indices[j - 1]);
+            int distance = city1->DistanceTo(city2);
             total = total + distance;
 
             if (NOISY == true) {
+                cout << "City 1: " << city1->ToString() << "\n";
+                cout << "City 2: " << city2->ToString() << "\n";
                 cout << "Distance from " << indices[j] << " to " << indices[j-1] << " is " << distance << "\n";
             }
         }
@@ -69,9 +71,9 @@ Solution TSPExactSolver::solve(Problem problem) {
     } while (next_permutation(indices, indices+size));
 
     //Construct an array of cities based on the stored indices of the shortest path
-    vector<City> shortestPath;
+    vector<City *> shortestPath;
     for (int n = 0; n < size; n++) {
-        City city = problem.getData().at(shortestTour[n]);
+        City * city = problem.getData().at(shortestTour[n]);
         shortestPath.push_back(city);
     }
 

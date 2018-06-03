@@ -146,7 +146,7 @@ bool SolveTSP::verifyApprox(std::vector<City*> tour, int size)
   {
     for(int i=0; i<3; i++)
     {    
-	lengthBeg += tour[i]->DistanceTo(tour[i-1]);
+	lengthBeg += tour[i]->DistanceTo(tour[i+1]);
     }
     for(int i=size-1; i>size-4; i--)
     {

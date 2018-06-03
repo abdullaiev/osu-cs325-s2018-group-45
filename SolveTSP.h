@@ -21,7 +21,7 @@
 class SolveTSP {
 
 private:
-    std::vector <City> cities;
+    std::vector <City*> tour;	// Will hold the final tour.  Used in NN and TwoOpt
 
 public:
 
@@ -37,8 +37,10 @@ public:
     bool verifyApprox(std::vector<City*>, int);
     int distance(City *A, City *B);        // Calculates Distance between City A and City B
 
-//	void 2opt(Tour*, int);		// Receives a Complete Tour, # of cities in tour.
-//	bool 2optSwap(Tour*, int, int);
+    void TwoOpt(std::vector<City*>, int);		// Receives a Complete Tour, # of cities in tour.
+    void TwoOptSwap(std::vector<City*>, int, int);
+    int SegmentLength(std::vector<City*>, int, int);
+
 };
 
 #endif

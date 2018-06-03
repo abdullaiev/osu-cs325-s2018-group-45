@@ -38,21 +38,23 @@ SolveTSP::~SolveTSP() {
 /* Going to Serve as the main solve function that brings together the solution */
 
 void SolveTSP::solve2OPT(std::string filename) {
-    Problem Prob(filename);
+    //Problem Prob(filename);
     //std::vector < City * > cities = Prob.getData();
    
     // Nearest Neighbor currently returns a Solution, but when 2OPT is working
     // 		maybe have it return a tour so it can just then be fed right into 
     // 		the 2opt function call and if desired sent to a Solution Object (outside of solveNN)
-    Solution nnSolution = solveNN(Prob);
-    nnSolution.write(filename); 
+    //Solution nnSolution = solveNN(Prob);
+    //nnSolution.write(filename);
+    //int size = Prob.getSize();
+    //TwoOpt(tour, size); 
 }
 
 //This is not working
 Solution SolveTSP::solveNN(Problem problem) {
     int size = problem.getSize();
     vector < City * > allCities = problem.getData();
-    vector < City * > tour;
+//    vector < City * > tour;  // ILLIA, I made this tour vector a private variable for the class.
     tour.push_back(allCities.at(0));
     allCities.at(0)->visited = true;
     long totalDistance = 0;
@@ -112,12 +114,24 @@ Solution SolveTSP::solveNN(Problem problem) {
         }
     }
 
+    /**** ALEX GARBAGE STUFF ****/
     // CAN DELETE, JUST TESTING
     bool status = verifyApprox(tour, size);
     if(status)
  	std::cout << "Distances are less than 25% different, GOOD TO GO" << std::endl;
     else
 	std::cout << "Distances are greater than 25% difference, Change Starting Point." << std::endl; 
+
+    // for alex debugging w/TwoOpt (sorry i am muddying up yor code)
+    std::cout << "NN Total Distance: " << totalDistance << std::endl;
+    int trial = SegmentLength(tour, 0, size-1);
+    std::cout << "SEG LENGTH: " << trial << std::endl; 
+
+    TwoOpt(tour, size);
+
+
+
+   /**** END OF ALEX GARBAGE STUFF ****/
 
 
     Solution solution(totalDistance, tour);
@@ -157,12 +171,12 @@ bool SolveTSP::verifyApprox(std::vector<City*> tour, int size)
     
     // Verifies that the percentage difference is under 25 
     approxAve = abs(lengthBeg-lengthEnd)/((lengthEnd+lengthBeg)/2)*100;
-  if(check){
-    std::cout << std::endl;
-    std::cout << "Beginning Lenght: " << lengthBeg << std::endl;
-    std::cout << "Ending Length: " << lengthEnd << std::endl;
-    std::cout << "Percentage: " << approxAve << std::endl;
-  }
+
+    if(check){
+    	std::cout << "Beginning Lenght: " << lengthBeg << std::endl;
+    	std::cout << "Ending Length: " << lengthEnd << std::endl;
+    	std::cout << "Percentage: " << approxAve << std::endl;
+    }
 
 
     if(approxAve < 25)
@@ -195,73 +209,88 @@ int SolveTSP::distance(City *A, City *B) {
 }
 
 
-/******************
- *
- *  CALL TOUR CLASS TO INITIALIE TOUR 
- *
- *  NN IS NOW IMPLEMENTED IN TOUR CLASS NOT HERE
- *
- * ***************/
+/*************   2-OPT IMPLEMENTATION **************/
 
 
-/********
- *
- *
- *
- * *****/
-
-/**
-void 2opt(Tour* tour, int size)
+void SolveTSP::TwoOpt(std::vector<City*> tour, int size)
 {
-  int improve = 0;  // make sure improvments are being made. 
- 
- // Could set the loop to check for n number of iterations without an improvment then break.
- // EXAMPLE: while(improve < 15)  --> makes it at most check a neighborhood without any improvments
-  for(int i=0; i<size-1; i++)
+  //int improve = 0;  // make sure improvments are being made. 
+
+  // NOTE: This Implementation never changes the starting city so skips over index 0  
+  // NOTE: Need to Create a limit Iterator (check +-10 city neighborhood)
+  for(int i=1; i<size-2; i++)
   {
-    k=i+1;
-    while(improve <15 && k<size)
+    for(int k=i+1; k<size-1; k++)
     {
-	if(2optSwap(tour, i, k))
-	{
-	  improve = 0;  //reset iteration back to 0
-	}
-	else
-	{
-	  improve++;  // not improved, so increase count.
-	}
-	k++;
+	// Swaps Edges and chooses the best path
+	TwoOptSwap(tour, i, k);
     }
   }
-  
+
+ int dist2OPT = SegmentLength(tour, 0, size-1);
+ int returnHome = tour[size-1]->DistanceTo(tour[0]); 
+ std::cout << "TWO-OPT FINAL DISTANCE: " << dist2OPT+returnHome << std::endl; 
 }	
-**/
 
 
-/**
-bool 2optSwap(Tour* tour, int i, int k)
+
+
+void SolveTSP::TwoOptSwap(std::vector<City*> tour, int i, int k)
 {
-  bool improveBool = FALSE;
-  int D = 0; 
-  int inc = 0;
-  for(int s=i; s<=k; ++s)
+  // NOTE: CANNOT SWAP First and LAST ELEMENT (since they are starting and stopping points)
+  // NOTE: Set Limits to never check below 0 and above (size-1) in Neighborhoods
+
+  // Lengths of the current path segment and the swapped path segment
+  int lengthCur = 0;
+  int lengthSwap = 0;
+  City* temp;   
+
+  lengthCur = SegmentLength(tour, i-1, k+1);
+  
+  temp = tour[i];
+  tour[i] = tour[k];
+  tour[k] = temp;
+
+  lengthSwap = SegmentLength(tour, i-1, k+1);
+
+  // If distance before the swap is less than after the swap, then revert back
+  if(lengthCur < lengthSwap)
   {
-    D += distance(tour.getCity(s-1), tour.getCity(k-inc))
-    inc++;
+    temp = tour[k];
+    tour[k] = tour[i];
+    tour[i] = temp;
   }
 
-  // Finds the current lenght of the section from i to k
-  distanceCur = tourLength(tour.getCity(i), tour.getCity(k));
 
-  if(D < distanceCur)
-  {
-    // redirect the cities to point to the new path above
 
-    improveBool = TRUE; 
-  }
-
-  return improveBool;
 }
-**/
+
+
+//Hmm maybe receive tour size so knows when to wrap around?
+int SolveTSP::SegmentLength(std::vector<City*> tour, int i, int k)
+{
+  int A, B;
+  int segmentLength = 0;
+  if(i<k)
+  {
+    A = i;
+    B = k;
+  } 
+  else
+  {
+    A = k;
+    B = i;
+  }
+  // NEED TO THINK ABOUT EDGE CASE OF WRAPPING AROUND VECTOR..
+  for(int z=A; z<B; z++)
+  {
+    segmentLength += tour[z]->DistanceTo(tour[z+1]);
+    //std::cout << tour.at(z)->id <<" to " << tour.at(z+1)->id <<" Distance: " << segmentLength << std::endl;
+  }
+
+  return segmentLength;
+}
+
+
 
 

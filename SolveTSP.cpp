@@ -113,7 +113,7 @@ Solution SolveTSP::solveNN(Problem problem) {
     }
 
     // CAN DELETE, JUST TESTING
-    bool status = verifyApprox(tour, tour.Count());
+    bool status = verifyApprox(tour, size);
     if(status)
  	std::cout << "Distances are less than 25% different, GOOD TO GO" << std::endl;
     else
@@ -125,6 +125,7 @@ Solution SolveTSP::solveNN(Problem problem) {
 }
 
 
+
 /******************
  * Verifies that the approximation made by NN is somewhat accurate
  * 	by checking the first few lenghts vs the last few lengths.
@@ -133,9 +134,9 @@ Solution SolveTSP::solveNN(Problem problem) {
  *
  * ***************/
 
-bool verifyApprox(std::vector<City*> tour, int size)
+bool SolveTSP::verifyApprox(std::vector<City*> tour, int size)
 {
-  bool status = FALSE:
+  bool verify = false;
   int lengthBeg = 0;
   int lengthEnd = 0;
   int approxAve = 0;
@@ -156,14 +157,14 @@ bool verifyApprox(std::vector<City*> tour, int size)
     approxAve = abs(lengthBeg-lengthEnd)/lengthEnd*100;
     if(approxAve < 25)
     {
-	status = TRUE;
+	verify = true;
     }
 
   }
 
-  else {status = TRUE;}
+  else {verify = true;}
 
-  return status;
+  return verify;
 }
 
 

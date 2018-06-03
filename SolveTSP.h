@@ -9,16 +9,16 @@
 #ifndef SOLVETSP_H
 #define SOLVETSP_H
 
-
+#include <string>
+#include <vector>
 #include "City.h"
-#include "Tour.h"
+//#include "Tour.h"
 #include "Node.h"
 
 class SolveTSP{
 
   private:
-	Tour* tour;		// Empty Tour Object to store the inital tour
-	Tour* tourNew;		// Empty Tour Object to store the updating approx tour..
+	std::vector<City> cities;
 
   public:
 
@@ -26,16 +26,15 @@ class SolveTSP{
 	SolveTSP();
 	~SolveTSP();
 
-	// Internal Functions run:  *NOTE: maybe make private
+	// called in Main.cpp
+	void solve2OPT(std::string);   // going to call Problem and then solve using NN and 2-opt
+
 	int distance(City* A, City* B);		// Calculates Distance between City A and City B
-	void duplicateTour(Tour*, Tour*);	// Makes a copy of a tour.
+	
+//	void 2opt(Tour*, int);		// Receives a Complete Tour, # of cities in tour.
+//	bool 2optSwap(Tour*, int, int);
 
-	void NN(Tour*);				// Receives a blank Tour and Fills it in
-	void 2opt(Tour*, int, Tour*);		// Receives a Complete Tour, # of cities in tour, and an empty tour.
-	void 2optSwap(Tour*, Tour*, int, int);
-
-	// User Interface Functions:
-
+	
 	
 };
 

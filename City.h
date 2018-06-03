@@ -33,6 +33,7 @@ public:
 	static bool CompareX(const City* lhs, const City* rhs);
 	static bool CompareY(const City* lhs, const City* rhs);
 	static bool CompareID(const City* lhs, const City* rhs);
+	int DistanceTo(const City* city);
 };
 
 

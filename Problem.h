@@ -21,6 +21,7 @@ private:
 public:
     Problem(string inputFileName);
     vector<City> getData();
+    int getSize();
 };
 
 #endif //OSU_CS325_S2018_GROUP_45_PROBLEM_H

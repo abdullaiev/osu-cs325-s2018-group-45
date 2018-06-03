@@ -7,8 +7,12 @@
  * *********************/
 
 #include <math.h>
+#include <queue>
+
 
 #include "SolveTSP.h"
+#include "SpatialTree.h"
+#include "Problem.h"
 
 /**************************************
  * Constructor and Destructor
@@ -16,15 +20,32 @@
 
 SolveTSP::SolveTSP(){
 
-};
+}
 
 SolveTSP::~SolveTSP(){
 
-};
+}
+
 
 /**************************************
  * Internal Functions
  * ************************************/
+
+void SolveTSP::solve2OPT(std::string filename)
+{
+  Problem Prob(filename);
+  std::vector<City> cities = Prob.getData();
+
+
+
+}
+
+
+
+
+
+
+
 
 /********
  * Input: 2 City Objects
@@ -35,36 +56,20 @@ SolveTSP::~SolveTSP(){
  * 	nearest integer.
  * *****/
 int SolveTSP::distance(City* A, City* B){
-  int dist;
-  dist = round(((B.x-A.x)^2 + (B.y-A.y)^2)^0.5) 
+  double dist;
+  dist = sqrt((B->xCoord-A->xCoord)^2 + (B->yCoord-A->yCoord)^2); 
+  int roundDist = round(dist);
+  return roundDist;
+}
 
-  return dist;
-};
 
-
-/********
- * Input: Pointer to a Tour Object
- * Output: Nothing
- * 
- * Description: Receives an empty Tour Object and
- * 	performs Nearest Neighbor Algorithm
- * 	using a Spatial Tree.... 
- * *****/
-
-void SolveTSP::NN(Tour* tour){
-  // Grab a starting City from the Spatial Tree
-  
-  // Add City to tour (make sure city nodes are pointing to null)
-  
-  // While all cities have not been visisted
-  
-	// GetNextNearest
-	// Add city to tour
-	
-  // Point End of back to the beginning
-  
-
-};
+/******************
+ *
+ *  CALL TOUR CLASS TO INITIALIE TOUR 
+ *
+ *  NN IS NOW IMPLEMENTED IN TOUR CLASS NOT HERE
+ *
+ * ***************/
 
 
 /********
@@ -72,45 +77,59 @@ void SolveTSP::NN(Tour* tour){
  *
  *
  * *****/
-void 2opt(Tour* tour, int size, Tour* tourNew)
-{
-  bool improve;  // make sure improvments are being made. 
-  int distanceNew;
-  int distanceBest;
-  // tourNew = tour by calling dupicate function
 
 /**
+void 2opt(Tour* tour, int size)
+{
+  int improve = 0;  // make sure improvments are being made. 
+ 
  // Could set the loop to check for n number of iterations without an improvment then break.
  // EXAMPLE: while(improve < 15)  --> makes it at most check a neighborhood without any improvments
-  while(improve){
-    improve = FALSE;
-    bestDistance = tour.getLength();
-    for(int i=0; i<size-1; i++)
+  for(int i=0; i<size-1; i++)
+  {
+    k=i+1;
+    while(improve <15 && k<size)
     {
-	for(int k=i+1; k<size; k++)
+	if(2optSwap(tour, i, k))
 	{
-	  2optSwap(tour, tourNew, i, k);
-	  distanceNew = tourNew.getLength();
-    
-    	  if(distanceNew < bestDistance)
-    	  {
-	    tour = tourNew; 
-	    distanceBest = distanceNew;
-	    improve = TRUE;
-    	  }
-
-  	}
+	  improve = 0;  //reset iteration back to 0
+	}
+	else
+	{
+	  improve++;  // not improved, so increase count.
+	}
+	k++;
     }
-  }  //end of while
-	
+  }
+  
+}	
 **/
 
 
+/**
+bool 2optSwap(Tour* tour, int i, int k)
+{
+  bool improveBool = FALSE;
+  int D = 0; 
+  int inc = 0;
+  for(int s=i; s<=k; ++s)
+  {
+    D += distance(tour.getCity(s-1), tour.getCity(k-inc))
+    inc++;
+  }
 
-};
+  // Finds the current lenght of the section from i to k
+  distanceCur = tourLength(tour.getCity(i), tour.getCity(k));
 
+  if(D < distanceCur)
+  {
+    // redirect the cities to point to the new path above
 
+    improveBool = TRUE; 
+  }
 
-
+  return improveBool;
+}
+**/
 
 

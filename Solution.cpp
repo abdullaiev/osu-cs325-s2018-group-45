@@ -5,6 +5,7 @@
  * Implementation for the Solution class
  ****************************************/
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <fstream>
@@ -14,6 +15,7 @@
 using std::string;
 using std::vector;
 using std::ofstream;
+using std::cout;
 
 Solution::Solution(int distance, vector <City> tour) {
     this->distance = distance;
@@ -23,6 +25,7 @@ Solution::Solution(int distance, vector <City> tour) {
 void Solution::write(string fileName) {
     //Open the output file by given name
     ofstream outputFile(fileName);
+    cout << "Saving the solution to " << fileName << "\n";
 
     if (outputFile.is_open()) {
         //Write the optimal distance first

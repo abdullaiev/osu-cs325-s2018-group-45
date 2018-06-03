@@ -38,7 +38,7 @@ SolveTSP::~SolveTSP() {
 
 void SolveTSP::solve2OPT(std::string filename) {
     Problem Prob(filename);
-    std::vector < City * > cities = Prob.getData();
+    //std::vector < City * > cities = Prob.getData();
    
     // Nearest Neighbor currently returns a Solution, but when 2OPT is working
     // 		maybe have it return a tour so it can just then be fed right into 

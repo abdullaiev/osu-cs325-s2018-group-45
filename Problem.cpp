@@ -31,6 +31,7 @@ Problem::Problem(string inputFileName) {
   // Verify file was found and can be accessed
   if(input){
     std::cout << inputFileName <<" - Opened Successfully." << std::endl;
+    std::cout << " CALCULATING SOLUTION... " << std::endl;  // since some run times may be long, lets user know
   }
 
   else{

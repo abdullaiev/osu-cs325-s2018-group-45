@@ -136,11 +136,13 @@ Solution SolveTSP::solveNN(Problem problem) {
 
 bool SolveTSP::verifyApprox(std::vector<City*> tour, int size)
 {
+  bool check = true; //for debugging
   bool verify = false;
   int lengthBeg = 0;
   int lengthEnd = 0;
   int approxAve = 0;
-  
+ 
+
   // Note: sizes under 10 will be run with the Exact Solution
   if(size > 10)
   {
@@ -154,7 +156,15 @@ bool SolveTSP::verifyApprox(std::vector<City*> tour, int size)
     }
     
     // Verifies that the percentage difference is under 25 
-    approxAve = abs(lengthBeg-lengthEnd)/lengthEnd*100;
+    approxAve = abs(lengthBeg-lengthEnd)/((lengthEnd+lengthBeg)/2)*100;
+  if(check){
+    std::cout << std::endl;
+    std::cout << "Beginning Lenght: " << lengthBeg << std::endl;
+    std::cout << "Ending Length: " << lengthEnd << std::endl;
+    std::cout << "Percentage: " << approxAve << std::endl;
+  }
+
+
     if(approxAve < 25)
     {
 	verify = true;

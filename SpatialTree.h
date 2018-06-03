@@ -15,6 +15,7 @@
 using std::vector;
 using std::queue;
 
+
 // Represents a 2-d tree of spatial sorted cities for use
 // in nearest neighbor selections
 class SpatialTree {
@@ -28,9 +29,9 @@ public:
 	
 	bool AllVisited() const;
 	void ClearVisited();
-	City* GetNextNearest(City* city);
-	queue<City*> GetKNearest(City* city, int k);
+	queue<City*> GetKNearest(const City* city, int k);
 	int Count() const;
+	int Depth() const;
 	
 	void Print() const;
 };

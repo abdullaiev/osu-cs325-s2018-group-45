@@ -14,30 +14,40 @@
 using std::string;
 using std::vector;
 
+enum SplitDim {SPLIT_X, SPLIT_Y};
+
 // Represents a tree or path node representing a city 
 class SpatialNode {
 public:
-	enum SplitDim {SPLIT_X, SPLIT_Y};
-
 	SpatialNode* left; 
 	SpatialNode* right;
 	City* city;
 	bool visited;
-	SplitDim splitdim;
+	SplitDim splitDim;
 	
 	SpatialNode();
 	// Create an orphaned node with the given city
 	SpatialNode(City* city);
-	// Populate the node with cities 
-	SpatialNode(vector<City*> cities, SplitDim dim);
+	// Populate the left and right nodes with cities 
+	// Sorts the array IN-PLACE!
+	SpatialNode(City* cities[], int iMin, int iMax, SplitDim dim);
+	
 	~SpatialNode();
+	
+	//
+	City* GetNextNearest(const City* city);
 	
 	// Clears the visited flag for the node (and its children if percolate is true)
 	void ClearVisited(bool percolate=true);
 	bool AllVisited() const;
 	
 	// Returns the offset that was used for this node
-	int Print(int offset=0) const;
+	void Print() const;
+	int Depth() const;
+	
+private:
+	SpatialNode* GetLeftNearest();
+	SpatialNode* GetRightNearest();
 };
 
 #endif

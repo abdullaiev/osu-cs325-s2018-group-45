@@ -2,39 +2,31 @@
 #include <vector>
 #include <algorithm>
 #include <string>
-#include <ctime>
+#include <queue>
 
 #include "Node.h"
 #include "City.h"
+#include "Tour.h"
+#include "SpatialTree.h"
 #include "Problem.h"
-#include "SolveTSP.h"
-#include "Solution.h"
-#include "TSPExactSolver.h"
 
 using std::endl;
 using std::cout;
 using std::vector;
 using std::sort;
 using std::string;
-using std::cout;
-using std::cin;
+using std::queue;
 
-
-int main(int argc, char *argv[]) {
-/**
+int main(int argc, char* argv[]) {
 	vector<City*> cities;
 	
 	cities.push_back(new City(5, 5, 1));
 	cities.push_back(new City(4, 3, 3));
 	cities.push_back(new City(3, 1, 2));
-	cities.push_back(new City(2, 2, 5));
+	cities.push_back(new City(2, 2, 6));
 	cities.push_back(new City(1, 4, 4));
-	
-	sort(cities.begin(), cities.end(), City::CompareID);
-	for (int i = 0; i < cities.size(); ++i) {
-		cout << cities[i]->ToString() << endl;
-	}
-	cout << endl;
+	cities.push_back(new City(0, 6, 1));
+	cities.push_back(new City(6, -6, 7));
 	
 	sort(cities.begin(), cities.end(), City::CompareX);
 	for (int i = 0; i < cities.size(); ++i) {
@@ -47,40 +39,59 @@ int main(int argc, char *argv[]) {
 		cout << cities[i]->ToString() << endl;
 	}
 	cout << endl;
-
-**/
-
-    string inputFileName;
-    string outputFileName;
-
-    if (argc == 1) {
-        cout << "Please enter the filename: ";
-        cin >> inputFileName;
-    } else {
-        inputFileName = argv[1];
-    }
-
-    outputFileName = inputFileName + ".tour";
-
-    //Measure algorithm performance
-    clock_t start = clock();
-
-    //Parse the input file and create a TSP
-    Problem tsp(inputFileName);
-
-    //Use the exact algorithm for small size problems
-    if (tsp.getSize() <= 10) {
-        TSPExactSolver exactTSP;
-        exactTSP.solve(tsp).write(outputFileName);
-    } else {
-//        SolveTSP solveTSP;
-//        solveTSP.solve2OPT(inputFileName);
-    }
-
-    //Print execution time
-    clock_t end = clock();
-    double duration = double(end - start) / CLOCKS_PER_SEC;
-    printf("Execution time: %.2lf seconds.\n", duration);
-
-    return 0;
+	
+	sort(cities.begin(), cities.end(), City::CompareID);
+	for (int i = 0; i < cities.size(); ++i) {
+		cout << cities[i]->ToString() << endl;
+	}
+	cout << endl;
+	
+	SpatialNode* root = new SpatialNode(cities[0]);
+	root->left = new SpatialNode(cities[1]);
+	root->right = new SpatialNode(cities[2]);
+	root->left->left = new SpatialNode(cities[3]);
+	root->left->right = new SpatialNode(cities[4]);
+	root->right->right = new SpatialNode(cities[5]);
+	
+	root->Print();
+	
+	delete root;
+	
+	Tour t = Tour(cities);
+	
+	for (int i = 0; i < t.Count(); ++i) {
+		City* city = t.GetCity(i);
+		cout << city->prev->ToString() << " <- " << city->ToString() << " -> " << city->next->ToString() << endl;
+	}
+	cout << endl << "Nearest to city 0" << endl;
+	queue<City*> neighbors = t.GetNearest(0,4);
+	cout << "Got " << neighbors.size() << " neighbors." << endl;
+	while (!neighbors.empty()) {
+		cout << neighbors.front()->ToString() << endl;
+		neighbors.pop();
+	}
+	
+	cout << endl << "Building spatial tree..." << endl << endl;
+	
+	vector<City> cityObjs = Problem("./samples/tsp_example_3.txt").getData();
+	vector<City*> cityPtrs(cityObjs.size());
+	for (int i = 0; i < cityPtrs.size(); ++i)
+		cityPtrs[i] = &cityObjs[i];
+	
+	SpatialTree tree(cityPtrs);
+	
+	cout << "Tree depth: " << tree.Depth() << endl;
+	
+	cout << "Getting cities near 1000,1000" << endl;
+	City testCity(0, 1000, 1000);
+	queue<City*> results = tree.GetKNearest(&testCity, 200);
+	
+	while (!results.empty()) {
+		cout << results.front()->ToString() << "Distance: " << results.front()->DistanceTo(&testCity) << endl;
+		results.pop();
+	}
+	
+	
+	
+	return 0;
 }

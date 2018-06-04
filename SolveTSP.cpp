@@ -82,7 +82,7 @@ Solution SolveTSP::solveNN(Problem problem) {
     int size = problem.getSize();
     vector <City *> allCities = problem.getData();
     bool NOISY = true;
-    int ATTEMPTS = 3;
+    int ATTEMPTS = 5;
     vector <City *> currentTour;
     long shortestDistance = -1;
     long currentDistance = 0;
@@ -148,7 +148,7 @@ Solution SolveTSP::solveNN(Problem problem) {
         }
     }
 
-    cout << "NN finished. Final shortest distance: " << shortestDistance << "\n";
+    cout << "NN finished. Final shortest distance: " << shortestDistance << ". Double check tour size: " << this->tour.size() << ".\n";
     Solution solution(shortestDistance, this->tour);
     return solution;
 }

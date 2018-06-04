@@ -31,7 +31,7 @@ public:
     ~SolveTSP();
 
     // called in Main.cpp
-    Solution solve2OPT(Problem problem);   // going to call Problem and then solve using NN and 2-opt
+    Solution solve(Problem problem);   // going to call Problem and then solve using NN and 2-opt
     Solution solveNN(Problem problem);
 
     bool verifyApprox(const std::vector<City*>&, int);

@@ -46,8 +46,7 @@ int main(int argc, char *argv[]) {
     } else {
         //Use Nearest Neighbor + 2-OPT for bigger problems
         SolveTSP solveTSP;
-        solveTSP.solveNN(tsp).write(outputFileName);
-//        solveTSP.solve2OPT(tsp).write(outputFileName + "_2OPT");
+        solveTSP.solve(tsp).write(outputFileName + "_2OPT");
     }
 
     //Print execution time

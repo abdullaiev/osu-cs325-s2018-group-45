@@ -17,6 +17,7 @@
 
 using std::vector;
 using std::cout;
+using std::endl;
 
 
 /**************************************
@@ -37,14 +38,25 @@ SolveTSP::~SolveTSP() {
  * ************************************/
 /* Going to Serve as the main solve function that brings together the solution */
 
-void SolveTSP::solve2OPT(std::string filename) {
-    //Problem Prob(filename);
+Solution SolveTSP::solve2OPT(Problem problem) {
     //std::vector < City * > cities = Prob.getData();
    
     // Nearest Neighbor currently returns a Solution, but when 2OPT is working
     // 		maybe have it return a tour so it can just then be fed right into 
     // 		the 2opt function call and if desired sent to a Solution Object (outside of solveNN)
     //Solution nnSolution = solveNN(Prob);
+	Solution soln = solveNN(problem);
+	
+	int size = problem.getSize();
+	
+	cout << "solve2OPT: Problem size: " << size << endl;
+	cout << "solve2OPT: Tour size: " << tour.size() << endl;
+	TwoOpt(tour, size);
+	
+	int dist = 0;
+	dist = SegmentLength(tour, 0, size-1) + tour[size-1]->DistanceTo(tour[0]);
+	
+	return Solution(dist, tour);
     //nnSolution.write(filename);
     //int size = Prob.getSize();
     //TwoOpt(tour, size); 
@@ -64,6 +76,9 @@ Solution SolveTSP::solveNN(Problem problem) {
         cout << "Size: " << size << "\n";
     }
 
+	// TESTING
+	//size = 10;
+	////////////
     for (int i = 0; i < size; i++) {
         int nearestNeighborDistance = -1;
         int nearestNeighborIndex = -1;
@@ -105,6 +120,7 @@ Solution SolveTSP::solveNN(Problem problem) {
             nextNeighbor->visited = true;
             tour.push_back(nextNeighbor);
             totalDistance = totalDistance + nearestNeighborDistance;
+			cout << nearestNeighborDistance << ", ";
 
             if (NOISY) {
                 cout << "Nearest neighbor index: " << nearestNeighborIndex << "\n";
@@ -127,7 +143,7 @@ Solution SolveTSP::solveNN(Problem problem) {
     int trial = SegmentLength(tour, 0, size-1);
     std::cout << "SEG LENGTH: " << trial << std::endl; 
 
-    TwoOpt(tour, size);
+    //TwoOpt(tour, size);
 
 
 
@@ -138,8 +154,6 @@ Solution SolveTSP::solveNN(Problem problem) {
     return solution;
 }
 
-
-
 /******************
  * Verifies that the approximation made by NN is somewhat accurate
  * 	by checking the first few lenghts vs the last few lengths.
@@ -148,7 +162,7 @@ Solution SolveTSP::solveNN(Problem problem) {
  *
  * ***************/
 
-bool SolveTSP::verifyApprox(std::vector<City*> tour, int size)
+bool SolveTSP::verifyApprox(const std::vector<City*>& tour, int size)
 {
   bool check = true; //for debugging
   bool verify = false;
@@ -212,7 +226,7 @@ int SolveTSP::distance(City *A, City *B) {
 /*************   2-OPT IMPLEMENTATION **************/
 
 
-void SolveTSP::TwoOpt(std::vector<City*> tour, int size)
+void SolveTSP::TwoOpt(std::vector<City*>& tour, int size)
 {
   //int improve = 0;  // make sure improvments are being made. 
 
@@ -233,9 +247,18 @@ void SolveTSP::TwoOpt(std::vector<City*> tour, int size)
 }	
 
 
+// Switch the order of cities in an interval
+void SolveTSP::ReverseTour(std::vector<City*>& tour, int i, int k) {
+	while (i < k) {
+		City* tmp = tour[i];
+		tour[i] = tour[k];
+		tour[k] = tmp;
+		i++;
+		k--;
+	}
+}
 
-
-void SolveTSP::TwoOptSwap(std::vector<City*> tour, int i, int k)
+void SolveTSP::TwoOptSwap(std::vector<City*>& tour, int i, int k)
 {
   // NOTE: CANNOT SWAP First and LAST ELEMENT (since they are starting and stopping points)
   // NOTE: Set Limits to never check below 0 and above (size-1) in Neighborhoods
@@ -247,27 +270,30 @@ void SolveTSP::TwoOptSwap(std::vector<City*> tour, int i, int k)
 
   lengthCur = SegmentLength(tour, i-1, k+1);
   
+  ReverseTour(tour, i, k);
+  /*
   temp = tour[i];
   tour[i] = tour[k];
   tour[k] = temp;
+  */
 
   lengthSwap = SegmentLength(tour, i-1, k+1);
 
   // If distance before the swap is less than after the swap, then revert back
   if(lengthCur < lengthSwap)
   {
-    temp = tour[k];
+	ReverseTour(tour, i, k);
+    /*
+	temp = tour[k];
     tour[k] = tour[i];
     tour[i] = temp;
+	*/
   }
-
-
-
 }
 
 
 //Hmm maybe receive tour size so knows when to wrap around?
-int SolveTSP::SegmentLength(std::vector<City*> tour, int i, int k)
+int SolveTSP::SegmentLength(const std::vector<City*>& tour, int i, int k)
 {
   int A, B;
   int segmentLength = 0;
@@ -286,6 +312,8 @@ int SolveTSP::SegmentLength(std::vector<City*> tour, int i, int k)
   {
     segmentLength += tour[z]->DistanceTo(tour[z+1]);
     //std::cout << tour.at(z)->id <<" to " << tour.at(z+1)->id <<" Distance: " << segmentLength << std::endl;
+	if (i == 0 && k == tour.size() -1)
+		std::cout << tour[z]->DistanceTo(tour[z+1]) << ", ";
   }
 
   return segmentLength;

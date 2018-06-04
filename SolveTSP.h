@@ -31,16 +31,18 @@ public:
     ~SolveTSP();
 
     // called in Main.cpp
-    void solve2OPT(std::string);   // going to call Problem and then solve using NN and 2-opt
+    Solution solve2OPT(Problem problem);   // going to call Problem and then solve using NN and 2-opt
     Solution solveNN(Problem problem);
 
-    bool verifyApprox(std::vector<City*>, int);
+    bool verifyApprox(const std::vector<City*>&, int);
     int distance(City *A, City *B);        // Calculates Distance between City A and City B
 
-    void TwoOpt(std::vector<City*>, int);		// Receives a Complete Tour, # of cities in tour.
-    void TwoOptSwap(std::vector<City*>, int, int);
-    int SegmentLength(std::vector<City*>, int, int);
+    void TwoOpt(std::vector<City*>&, int);		// Receives a Complete Tour, # of cities in tour.
+    void TwoOptSwap(std::vector<City*>&, int, int);
+    int SegmentLength(const std::vector<City*>&, int, int);
 
+private:
+	void ReverseTour(std::vector<City*>& tour, int i, int k);
 };
 
 #endif

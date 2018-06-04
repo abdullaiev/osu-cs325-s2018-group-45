@@ -254,10 +254,10 @@ void SolveTSP::TwoOpt(std::vector<City*>& tour, int size)
     for(int k=i+1; k<size; k++)
     {
 	// Swaps Edges and chooses the best path
-	TwoOptSwap(tour, i, k);
+	TwoOptSwap(tour, i, k, size);
     }
   }
- // TwoOptSwap(tour, size-1, 0);
+ 
  long dist2OPT = SegmentLength(tour, 0, size-1);
  long returnHome = tour[size-1]->DistanceTo(tour[0]);
  std::cout << "TWO-OPT FINAL DISTANCE: " << dist2OPT+returnHome << std::endl; 
@@ -286,7 +286,13 @@ void SolveTSP::ReverseTour(std::vector<City*>& tour, int i, int k) {
 	}
 }
 
-void SolveTSP::TwoOptSwap(std::vector<City*>& tour, int i, int k)
+
+/******************
+ * SWAPS and COMPARES EDGES
+ *
+ *
+ * ***************/
+void SolveTSP::TwoOptSwap(std::vector<City*>& tour, int i, int k, int size)
 {
   // NOTE: CANNOT SWAP First and LAST ELEMENT (since they are starting and stopping points)
   // NOTE: Set Limits to never check below 0 and above (size-1) in Neighborhoods
@@ -295,11 +301,20 @@ void SolveTSP::TwoOptSwap(std::vector<City*>& tour, int i, int k)
   long lengthCur = 0;
   long lengthSwp = 0;
 
- // ONLY Check check edges being switched..
+  // Making sure indices can wrap around
+  if(k<0)
+  {
+    k = (size-1)+k;
+  }
+  else if(k > (size-1))
+  {
+    k = k-(size-1)-1;
+  }
 
+
+ // ONLY Check check edges being switched..
   lengthCur = (tour[i-1]->DistanceTo(tour[i])) + (tour[k]->DistanceTo(tour[k+1]));
   lengthSwp = (tour[i-1]->DistanceTo(tour[k])) + (tour[i]->DistanceTo(tour[k+1]));
-
 
   // If distance before the swap is less than after the swap, then revert back
   if(lengthCur > lengthSwp)

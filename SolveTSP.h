@@ -38,7 +38,7 @@ public:
     int distance(City *A, City *B);        // Calculates Distance between City A and City B
 
     void TwoOpt(std::vector<City*>&, int);		// Receives a Complete Tour, # of cities in tour.
-    void TwoOptSwap(std::vector<City*>&, int, int);
+    void TwoOptSwap(std::vector<City*>&, int, int, int);
     int SegmentLength(const std::vector<City*>&, int, int);
 
 private:

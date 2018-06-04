@@ -104,7 +104,7 @@ Solution SolveTSP::solveNN(Problem problem) {
         currentCity->visited = true;
 
         if (NOISY) {
-            cout << "Iteration 1. Starting with a random vertex at index " << randomIndex << ".\n";
+            cout << "Iteration " << count << ". Starting with a random vertex at index " << randomIndex << ".\n";
         }
 
         bool allVisited = false;

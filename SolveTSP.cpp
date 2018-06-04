@@ -293,33 +293,18 @@ void SolveTSP::TwoOptSwap(std::vector<City*>& tour, int i, int k)
 
   // Lengths of the current path segment and the swapped path segment
   long lengthCur = 0;
-  long lengthSwap = 0;
-  City* temp;   
-
-  lengthCur = SegmentLength(tour, i-1, k+1);
-  
-  ReverseTour(tour, i, k);
-  /*
-  temp = tour[i];
-  tour[i] = tour[k];
-  tour[k] = temp;
-  */
-
-  lengthSwap = SegmentLength(tour, i-1, k+1);
+  long lengthSwp = 0;
 
  // ONLY Check check edges being switched..
 
+  lengthCur = (tour[i-1]->DistanceTo(tour[i])) + (tour[k]->DistanceTo(tour[k+1]));
+  lengthSwp = (tour[i-1]->DistanceTo(tour[k])) + (tour[i]->DistanceTo(tour[k+1]));
 
 
   // If distance before the swap is less than after the swap, then revert back
-  if(lengthCur < lengthSwap)
+  if(lengthCur > lengthSwp)
   {
 	ReverseTour(tour, i, k);
-    /*
-	temp = tour[k];
-    tour[k] = tour[i];
-    tour[i] = temp;
-	*/
   }
 }
 

@@ -10,6 +10,7 @@
 #include <queue>
 #include <vector>
 #include <iostream>
+#include <cstdlib>
 
 #include "SolveTSP.h"
 #include "SpatialTree.h"
@@ -60,7 +61,7 @@ Solution SolveTSP::solve2OPT(Problem problem) {
     // 		maybe have it return a tour so it can just then be fed right into 
     // 		the 2opt function call and if desired sent to a Solution Object (outside of solveNN)
 
-//	Solution soln = solveNN(problem);
+	Solution soln = solveNN(problem);
 	
 	int size = problem.getSize();
 	
@@ -82,8 +83,11 @@ Solution SolveTSP::solveNN(Problem problem) {
     int size = problem.getSize();
     vector < City * > allCities = problem.getData();
 //    vector < City * > tour;  // ILLIA, I made this tour vector a private variable for the class.
-    tour.push_back(allCities.at(0));
-    allCities.at(0)->visited = true;
+
+    int start = rand()%size;  // need to srand in main
+   // tour.clear();
+    tour.push_back(allCities.at(start));
+    allCities.at(start)->visited = true;
     long totalDistance = 0;
     bool NOISY = false;
 
@@ -250,7 +254,7 @@ void SolveTSP::TwoOpt(std::vector<City*>& tour, int size)
   // NOTE: This Implementation never changes the starting city so skips over index 0  
   // NOTE: Need to Create a limit Iterator (check +-10 city neighborhood)
  int count =0;
- while(count <3){
+ while(count <5){
   for(int i=1; i<size-2; i++)
   {
     for(int k=i+1; k<size-1; k++)
@@ -259,7 +263,7 @@ void SolveTSP::TwoOpt(std::vector<City*>& tour, int size)
 	TwoOptSwap(tour, i, k);
     }
   }
-
+ // TwoOptSwap(tour, size-1, 0);
  long dist2OPT = SegmentLength(tour, 0, size-1);
  long returnHome = tour[size-1]->DistanceTo(tour[0]); 
  std::cout << "TWO-OPT FINAL DISTANCE: " << dist2OPT+returnHome << std::endl; 
@@ -271,6 +275,14 @@ void SolveTSP::TwoOpt(std::vector<City*>& tour, int size)
 
 // Switch the order of cities in an interval
 void SolveTSP::ReverseTour(std::vector<City*>& tour, int i, int k) {
+
+  if(i>k)
+  {
+    int temp = i;
+    i = k;
+    k = temp;
+  }
+
 	while (i < k) {
 		City* tmp = tour[i];
 		tour[i] = tour[k];
@@ -300,6 +312,10 @@ void SolveTSP::TwoOptSwap(std::vector<City*>& tour, int i, int k)
   */
 
   lengthSwap = SegmentLength(tour, i-1, k+1);
+
+ // ONLY Check check edges being switched.. 
+
+
 
   // If distance before the swap is less than after the swap, then revert back
   if(lengthCur < lengthSwap)

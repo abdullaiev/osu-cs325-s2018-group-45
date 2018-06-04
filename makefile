@@ -50,4 +50,4 @@ clean:
 	rm -f ${PROGRAM} *.o *~
 
 clear tour:
-	rm -f $(PROGRAM) *.o *~ *.test-tour
+	rm -f $(PROGRAM) *.o *~ *.test-tour*

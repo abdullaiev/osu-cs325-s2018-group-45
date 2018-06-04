@@ -54,13 +54,13 @@ SolveTSP::~SolveTSP() {
 /* Going to Serve as the main solve function that brings together the solution */
 
 Solution SolveTSP::solve2OPT(Problem problem) {
-    //std::vector < City * > cities = Prob.getData();
-   
+
+  
     // Nearest Neighbor currently returns a Solution, but when 2OPT is working
     // 		maybe have it return a tour so it can just then be fed right into 
     // 		the 2opt function call and if desired sent to a Solution Object (outside of solveNN)
-    //Solution nnSolution = solveNN(Prob);
-	Solution soln = solveNN(problem);
+
+//	Solution soln = solveNN(problem);
 	
 	int size = problem.getSize();
 	
@@ -72,9 +72,9 @@ Solution SolveTSP::solve2OPT(Problem problem) {
 	dist = SegmentLength(tour, 0, size-1) + tour[size-1]->DistanceTo(tour[0]);
 	
 	return Solution(dist, tour);
-    //nnSolution.write(filename);
-    //int size = Prob.getSize();
-    //TwoOpt(tour, size); 
+
+
+
 }
 
 //This is not working

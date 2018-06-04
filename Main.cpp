@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
         exactTSP.solve(tsp).write(outputFileName);
     } else {
         //Use Nearest Neighbor + 2-OPT for bigger problems
-	srand(time(NULL));
+        srand(time(NULL));
         SolveTSP solveTSP;
         solveTSP.solve(tsp).write(outputFileName + "_2OPT");
     }

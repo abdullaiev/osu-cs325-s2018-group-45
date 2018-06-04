@@ -78,100 +78,78 @@ Solution SolveTSP::solve2OPT(Problem problem) {
 
 }
 
-//This is not working
 Solution SolveTSP::solveNN(Problem problem) {
     int size = problem.getSize();
-    vector < City * > allCities = problem.getData();
-//    vector < City * > tour;  // ILLIA, I made this tour vector a private variable for the class.
-
-    int start = rand()%size;  // need to srand in main
-   // tour.clear();
-    tour.push_back(allCities.at(start));
-    allCities.at(start)->visited = true;
-    long totalDistance = 0;
-    bool NOISY = false;
+    vector <City *> allCities = problem.getData();
+    bool NOISY = true;
+    int ATTEMPTS = 3;
+    vector <City *> currentTour;
+    long shortestDistance = -1;
+    long currentDistance = 0;
 
     if (NOISY) {
-        cout << "Size: " << size << "\n";
+        cout << "Running NN algorithm on a problem of size " << size << "...\n";
     }
 
-	// TESTING
-	//size = 10;
-	////////////
-    for (int i = 0; i < size; i++) {
-        int nearestNeighborDistance = -1;
-        int nearestNeighborIndex = -1;
+    for (int count = 0; count < ATTEMPTS; count++) {
+        currentTour.clear();
+        currentDistance = 0;
+        for (int i = 0; i < size; i++) {
+            allCities.at(i)->visited = false;
+        }
+
+        int randomIndex = std::rand() % size;
+        City * currentCity = allCities.at(randomIndex);
+        currentTour.push_back(currentCity);
+        currentCity->visited = true;
 
         if (NOISY) {
-            cout << "Iteration: " << i << "\n";
+            cout << "Iteration 1. Starting with a random vertex at index " << randomIndex << ".\n";
         }
 
-        for (int j = 0; j < size; j++) {
-            if (i == j) {
-                continue;
+        bool allVisited = false;
+
+        while (!allVisited) {
+            allVisited = true;
+
+            int nextNeighborDistance = -1;
+            City * nextNeighbor;
+
+            for (int j = 0; j < size; j++) {
+                if (allCities.at(j)->visited) {
+                    continue;
+                } else {
+                    allVisited = false;
+                    City * neighbor = allCities.at(j);
+                    int distance = currentCity->DistanceTo(neighbor);
+
+                    if (nextNeighborDistance == -1 || distance < nextNeighborDistance) {
+                        nextNeighborDistance = distance;
+                        nextNeighbor = neighbor;
+                    }
+                }
             }
 
-            City * potentialNeighbor = allCities.at(j);
-
-            if (NOISY) {
-                cout << "potentialNeighbor: " << potentialNeighbor->id << ". Visited:  " << potentialNeighbor->visited << "\n";
-            }
-
-            if (potentialNeighbor->visited) {
-                continue;
-            }
-
-            City * currentCity = allCities.at(i);
-            int distanceToCity = currentCity->DistanceTo(potentialNeighbor);
-
-            if (NOISY) {
-                cout << "currentCity: " << currentCity->id << ". Distance to potential neighbor:  " << distanceToCity << "\n";
-            }
-
-            if (nearestNeighborDistance == -1 || nearestNeighborDistance > distanceToCity) {
-                nearestNeighborDistance = distanceToCity;
-                nearestNeighborIndex = j;
+            if (nextNeighborDistance != -1) {
+                nextNeighbor->visited = true;
+                currentTour.push_back(nextNeighbor);
+                currentCity = nextNeighbor;
+                currentDistance = currentDistance + nextNeighborDistance;
             }
         }
 
-        if (nearestNeighborIndex != -1) {
-            City *nextNeighbor = allCities.at(nearestNeighborIndex);
-            nextNeighbor->visited = true;
-            tour.push_back(nextNeighbor);
-            totalDistance = totalDistance + nearestNeighborDistance;
-			//cout << nearestNeighborDistance << ", ";
+        if (NOISY) {
+            cout << "Iteration " << count << " resulted in shortest distance of " << currentDistance << ".\n";
+        }
 
-            if (NOISY) {
-                cout << "Nearest neighbor index: " << nearestNeighborIndex << "\n";
-                cout << "Nearest neighbor distance: " << nearestNeighborDistance << "\n";
-                cout << "Running total: " << totalDistance << "\n";
-            }
+        if (shortestDistance == -1 || currentDistance < shortestDistance) {
+            shortestDistance = currentDistance;
+            this->tour = currentTour;
         }
     }
 
-    /**** ALEX GARBAGE STUFF ****/
-    // CAN DELETE, JUST TESTING
-    bool status = verifyApprox(tour, size);
-    if(status)
- 	std::cout << "Distances are less than 25% different, GOOD TO GO" << std::endl;
-    else
-	std::cout << "Distances are greater than 25% difference, Change Starting Point." << std::endl; 
-
-    // for alex debugging w/TwoOpt (sorry i am muddying up yor code)
-    std::cout << "NN Total Distance: " << totalDistance << std::endl;
-
-    std::cout << "----- USING 2-OPT Segment Calculation.. -- " << std::endl;
-    int trial = SegmentLength(tour, 0, size-1);
-    std::cout << "SEG LENGTH: " << trial << std::endl; 
-
-    //TwoOpt(tour, size);
-
-
-
-   /**** END OF ALEX GARBAGE STUFF ****/
-
-
-    Solution solution(totalDistance, tour);
+    cout << "NN finished. Final shortest distance: " << shortestDistance << "\n";
+    Solution solution(shortestDistance, this->tour);
     return solution;
 }
 
@@ -265,12 +243,12 @@ void SolveTSP::TwoOpt(std::vector<City*>& tour, int size)
   }
  // TwoOptSwap(tour, size-1, 0);
  long dist2OPT = SegmentLength(tour, 0, size-1);
- long returnHome = tour[size-1]->DistanceTo(tour[0]); 
+ long returnHome = tour[size-1]->DistanceTo(tour[0]);
  std::cout << "TWO-OPT FINAL DISTANCE: " << dist2OPT+returnHome << std::endl; 
 
  count++;
  } //inner while loopy
-}	
+}
 
 
 // Switch the order of cities in an interval
@@ -313,7 +291,7 @@ void SolveTSP::TwoOptSwap(std::vector<City*>& tour, int i, int k)
 
   lengthSwap = SegmentLength(tour, i-1, k+1);
 
- // ONLY Check check edges being switched.. 
+ // ONLY Check check edges being switched..
 
 
 

@@ -19,6 +19,21 @@ using std::vector;
 using std::cout;
 using std::endl;
 
+/***********************************
+IDEAS
+
+1) Handle wrap-around for dist calcs and edge swaps
+2) Use long for all dist sums
+3) Don't reverse nodes from i to k unless swap took place
+4) Use nearest neighbor to instead of all k nodes
+   - perhaps checking selecting others as well
+5) Run 2-OPT more than once?
+6) Figure out why size and getSize() are not the same. Perhaps this is why the dist calcs difference
+7) Rerun NN tour builder with different random nodes?
+************************************/
+
+
+
 
 /**************************************
  * Constructor and Destructor
@@ -120,7 +135,7 @@ Solution SolveTSP::solveNN(Problem problem) {
             nextNeighbor->visited = true;
             tour.push_back(nextNeighbor);
             totalDistance = totalDistance + nearestNeighborDistance;
-			cout << nearestNeighborDistance << ", ";
+			//cout << nearestNeighborDistance << ", ";
 
             if (NOISY) {
                 cout << "Nearest neighbor index: " << nearestNeighborIndex << "\n";
@@ -312,8 +327,8 @@ int SolveTSP::SegmentLength(const std::vector<City*>& tour, int i, int k)
   {
     segmentLength += tour[z]->DistanceTo(tour[z+1]);
     //std::cout << tour.at(z)->id <<" to " << tour.at(z+1)->id <<" Distance: " << segmentLength << std::endl;
-	if (i == 0 && k == tour.size() -1)
-		std::cout << tour[z]->DistanceTo(tour[z+1]) << ", ";
+	//if (i == 0 && k == tour.size() -1)
+		//std::cout << tour[z]->DistanceTo(tour[z+1]) << ", ";
   }
 
   return segmentLength;

@@ -11,8 +11,8 @@
 
 #include <string>
 #include <vector>
+
 #include "City.h"
-//#include "Tour.h"
 #include "Node.h"
 #include "Solution.h"
 #include "Problem.h"
@@ -29,7 +29,7 @@ public:
     SolveTSP();
 
     ~SolveTSP();
-
+    
     // called in Main.cpp
     Solution solve(Problem problem);   // going to call Problem and then solve using NN and 2-opt
     Solution solveNN(Problem problem);

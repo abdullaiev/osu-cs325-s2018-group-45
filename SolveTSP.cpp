@@ -82,7 +82,16 @@ Solution SolveTSP::solveNN(Problem problem) {
     int size = problem.getSize();
     vector <City *> allCities = problem.getData();
     bool NOISY = true;
-    int ATTEMPTS = 5;
+
+    // If City Size is less than 500, run more times for better accuracy.
+    int ATTEMPTS;
+    if(size <500 ){
+	ATTEMPTS = 20;
+    }
+    else{
+	ATTEMPTS = 5;
+    }
+    
     vector <City *> currentTour;
     long shortestDistance = -1;
     long currentDistance = 0;
@@ -98,7 +107,7 @@ Solution SolveTSP::solveNN(Problem problem) {
             allCities.at(i)->visited = false;
         }
 
-        int randomIndex = std::rand() % size;
+        int randomIndex = std::rand() % size;  //calls srand() in Main.cpp
         City * currentCity = allCities.at(randomIndex);
         currentTour.push_back(currentCity);
         currentCity->visited = true;
@@ -149,6 +158,7 @@ Solution SolveTSP::solveNN(Problem problem) {
     }
 
     cout << "NN finished. Final shortest distance: " << shortestDistance << ". Double check tour size: " << this->tour.size() << ".\n";
+    //cout << "Verifying Distance by going through Array(not counting return to start): " << SegmentLength(tour, 0,this->tour.size()-1) << std::endl;
     Solution solution(shortestDistance, this->tour);
     return solution;
 }
@@ -233,9 +243,9 @@ void SolveTSP::TwoOpt(std::vector<City*>& tour, int size)
   // NOTE: Need to Create a limit Iterator (check +-10 city neighborhood)
  int count =0;
  while(count <5){
-  for(int i=1; i<size-2; i++)
+  for(int i=1; i<size-1; i++)
   {
-    for(int k=i+1; k<size-1; k++)
+    for(int k=i+1; k<size; k++)
     {
 	// Swaps Edges and chooses the best path
 	TwoOptSwap(tour, i, k);

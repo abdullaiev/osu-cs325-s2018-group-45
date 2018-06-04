@@ -18,12 +18,12 @@ City::City(int id, int x, int y) {
 	this->xCoord = x;
 	this->yCoord = y;
 	this->visited = false;
-};
+} //;
 
 string City::ToString() {
 	return /*"City " + to_string(id) + ": */"(" + to_string(xCoord) + ", " + to_string(yCoord) + ")";
 	
-};
+} //;
 
 bool City::CompareX(const City* lhs, const City* rhs){
 	return lhs->xCoord < rhs->xCoord;

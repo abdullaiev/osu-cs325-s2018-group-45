@@ -50,7 +50,7 @@ SpatialTree::SpatialTree(const vector<City*> cities) {
 		cout << "Building root node..." << endl;
 		root = new SpatialNode(citiesCopy.data(), 0, size, SPLIT_X);
 	}
-};
+} // Had ; here
 
 SpatialTree::~SpatialTree() {
 	if (root)
@@ -64,7 +64,7 @@ bool SpatialTree::AllVisited() const {
 void SpatialTree::ClearVisited() {
 	if (root)
 		root->ClearVisited();
-};
+} // Had ; here
 
 queue<City*> SpatialTree::GetKNearest(const City* city, int k) {
 	// Limit to the number of nodes available
@@ -78,7 +78,7 @@ queue<City*> SpatialTree::GetKNearest(const City* city, int k) {
 		q.push(root->GetNextNearest(city));
 	
 	return q;
-};
+}  // Had ; here
 
 int SpatialTree::Count() const{
 	return size;

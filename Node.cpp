@@ -22,14 +22,14 @@ SpatialNode::SpatialNode() {
 	right = NULL; 
 	city = NULL; 
 	visited = false;
-};
+} //;
 
 SpatialNode::SpatialNode(City* city) {
 	left = NULL;
 	right = NULL;
 	this->city = city;
 	visited = false;
-};
+} //;
 
 // Sorts the cities by X or Y, takes the median city, and recursively builds the tree on either side 
 SpatialNode::SpatialNode(City* cities[], int iMin, int iMax, SplitDim dim) {

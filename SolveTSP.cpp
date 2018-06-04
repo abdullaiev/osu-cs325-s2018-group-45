@@ -68,7 +68,7 @@ Solution SolveTSP::solve2OPT(Problem problem) {
 	cout << "solve2OPT: Tour size: " << tour.size() << endl;
 	TwoOpt(tour, size);
 	
-	int dist = 0;
+	long dist = 0;
 	dist = SegmentLength(tour, 0, size-1) + tour[size-1]->DistanceTo(tour[0]);
 	
 	return Solution(dist, tour);
@@ -256,8 +256,8 @@ void SolveTSP::TwoOpt(std::vector<City*>& tour, int size)
     }
   }
 
- int dist2OPT = SegmentLength(tour, 0, size-1);
- int returnHome = tour[size-1]->DistanceTo(tour[0]); 
+ long dist2OPT = SegmentLength(tour, 0, size-1);
+ long returnHome = tour[size-1]->DistanceTo(tour[0]); 
  std::cout << "TWO-OPT FINAL DISTANCE: " << dist2OPT+returnHome << std::endl; 
 }	
 
@@ -279,8 +279,8 @@ void SolveTSP::TwoOptSwap(std::vector<City*>& tour, int i, int k)
   // NOTE: Set Limits to never check below 0 and above (size-1) in Neighborhoods
 
   // Lengths of the current path segment and the swapped path segment
-  int lengthCur = 0;
-  int lengthSwap = 0;
+  long lengthCur = 0;
+  long lengthSwap = 0;
   City* temp;   
 
   lengthCur = SegmentLength(tour, i-1, k+1);
@@ -311,7 +311,7 @@ void SolveTSP::TwoOptSwap(std::vector<City*>& tour, int i, int k)
 int SolveTSP::SegmentLength(const std::vector<City*>& tour, int i, int k)
 {
   int A, B;
-  int segmentLength = 0;
+  long segmentLength = 0;
   if(i<k)
   {
     A = i;
@@ -322,13 +322,12 @@ int SolveTSP::SegmentLength(const std::vector<City*>& tour, int i, int k)
     A = k;
     B = i;
   }
+
   // NEED TO THINK ABOUT EDGE CASE OF WRAPPING AROUND VECTOR..
   for(int z=A; z<B; z++)
   {
     segmentLength += tour[z]->DistanceTo(tour[z+1]);
     //std::cout << tour.at(z)->id <<" to " << tour.at(z+1)->id <<" Distance: " << segmentLength << std::endl;
-	//if (i == 0 && k == tour.size() -1)
-		//std::cout << tour[z]->DistanceTo(tour[z+1]) << ", ";
   }
 
   return segmentLength;

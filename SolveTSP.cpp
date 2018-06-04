@@ -78,19 +78,15 @@ Solution SolveTSP::solve(Problem problem) {
 
 }
 
+//This function solves a TSP by using the Nearest Neighbor approach.
+//It starts from a random vertex, marks it as visited, and then finds the next nearest vertex until all vertices have been visited.
 Solution SolveTSP::solveNN(Problem problem) {
     int size = problem.getSize();
     vector <City *> allCities = problem.getData();
     bool NOISY = true;
 
-    // If City Size is less than 500, run more times for better accuracy.
-    int ATTEMPTS;
-    if(size <500 ){
-	ATTEMPTS = 20;
-    }
-    else{
-	ATTEMPTS = 5;
-    }
+    //If City Size is less than 500, run more times for better accuracy.
+    int ATTEMPTS = size < 500 ? 20 : 5;
     
     vector <City *> currentTour;
     long shortestDistance = -1;
@@ -100,13 +96,16 @@ Solution SolveTSP::solveNN(Problem problem) {
         cout << "Running NN algorithm on a problem of size " << size << "...\n";
     }
 
+    //We've discovered that running NN multiple times starting from different random vertices can yield a shorter overall path.
     for (int count = 0; count < ATTEMPTS; count++) {
+        //Clear all variables for this iteration
         currentTour.clear();
         currentDistance = 0;
         for (int i = 0; i < size; i++) {
             allCities.at(i)->visited = false;
         }
 
+        //Start the tour from a random vertex, mark it as visited
         int randomIndex = std::rand() % size;  //calls srand() in Main.cpp
         City * currentCity = allCities.at(randomIndex);
         currentTour.push_back(currentCity);
@@ -118,6 +117,7 @@ Solution SolveTSP::solveNN(Problem problem) {
 
         bool allVisited = false;
 
+        //Keep on finding next nearest neighbors until all vertices have been visited
         while (!allVisited) {
             allVisited = true;
 
@@ -128,10 +128,14 @@ Solution SolveTSP::solveNN(Problem problem) {
                 if (allCities.at(j)->visited) {
                     continue;
                 } else {
+                    //There are still neighbors not visited
                     allVisited = false;
+
+                    //Get distance to the next potential neighbor
                     City * neighbor = allCities.at(j);
                     int distance = currentCity->DistanceTo(neighbor);
 
+                    //If this neighbor is closer to the current city than any other, save it's distance
                     if (nextNeighborDistance == -1 || distance < nextNeighborDistance) {
                         nextNeighborDistance = distance;
                         nextNeighbor = neighbor;
@@ -139,6 +143,7 @@ Solution SolveTSP::solveNN(Problem problem) {
                 }
             }
 
+            //Add the nearest neighbor found in the loop above to the tour
             if (nextNeighborDistance != -1) {
                 nextNeighbor->visited = true;
                 currentTour.push_back(nextNeighbor);
@@ -151,6 +156,7 @@ Solution SolveTSP::solveNN(Problem problem) {
             cout << "Iteration " << count << " resulted in shortest distance of " << currentDistance << ".\n";
         }
 
+        //Once the tour is constructed, check if it shorter than any previously calculates tours
         if (shortestDistance == -1 || currentDistance < shortestDistance) {
             shortestDistance = currentDistance;
             this->tour = currentTour;

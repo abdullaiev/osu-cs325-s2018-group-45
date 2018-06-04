@@ -155,6 +155,8 @@ Solution SolveTSP::solveNN(Problem problem) {
 
     // for alex debugging w/TwoOpt (sorry i am muddying up yor code)
     std::cout << "NN Total Distance: " << totalDistance << std::endl;
+
+    std::cout << "----- USING 2-OPT Segment Calculation.. -- " << std::endl;
     int trial = SegmentLength(tour, 0, size-1);
     std::cout << "SEG LENGTH: " << trial << std::endl; 
 
@@ -247,6 +249,8 @@ void SolveTSP::TwoOpt(std::vector<City*>& tour, int size)
 
   // NOTE: This Implementation never changes the starting city so skips over index 0  
   // NOTE: Need to Create a limit Iterator (check +-10 city neighborhood)
+ int count =0;
+ while(count <3){
   for(int i=1; i<size-2; i++)
   {
     for(int k=i+1; k<size-1; k++)
@@ -259,6 +263,9 @@ void SolveTSP::TwoOpt(std::vector<City*>& tour, int size)
  long dist2OPT = SegmentLength(tour, 0, size-1);
  long returnHome = tour[size-1]->DistanceTo(tour[0]); 
  std::cout << "TWO-OPT FINAL DISTANCE: " << dist2OPT+returnHome << std::endl; 
+
+ count++;
+ } //inner while loopy
 }	
 
 
@@ -327,7 +334,7 @@ int SolveTSP::SegmentLength(const std::vector<City*>& tour, int i, int k)
   for(int z=A; z<B; z++)
   {
     segmentLength += tour[z]->DistanceTo(tour[z+1]);
-    //std::cout << tour.at(z)->id <<" to " << tour.at(z+1)->id <<" Distance: " << segmentLength << std::endl;
+   // std::cout << tour.at(z)->id <<" to " << tour.at(z+1)->id <<" Distance: " << segmentLength << std::endl;
   }
 
   return segmentLength;

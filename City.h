@@ -17,23 +17,27 @@ using std::vector;
 // with an identifying #
 class City {
 
-	
-public:
-	int id; 
-	int xCoord;
-	int yCoord;
-	City* next;
-	City* prev;
-	bool visited;
-	
-	City(int id, int x, int y);
-	string ToString();
 
 public:
-	static bool CompareX(const City* lhs, const City* rhs);
-	static bool CompareY(const City* lhs, const City* rhs);
-	static bool CompareID(const City* lhs, const City* rhs);
-	int DistanceTo(const City* city);
+    int id;
+    int xCoord;
+    int yCoord;
+    City *next;
+    City *prev;
+    bool visited;
+
+    City(int id, int x, int y);
+
+    string ToString();
+
+public:
+    static bool CompareX(const City *lhs, const City *rhs);
+
+    static bool CompareY(const City *lhs, const City *rhs);
+
+    static bool CompareID(const City *lhs, const City *rhs);
+
+    int DistanceTo(const City *city);
 };
 
 

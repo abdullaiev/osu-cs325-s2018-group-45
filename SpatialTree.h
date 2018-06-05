@@ -20,20 +20,26 @@ using std::queue;
 // in nearest neighbor selections
 class SpatialTree {
 private:
-	SpatialNode* root;
-	int size;
+    SpatialNode *root;
+    int size;
 public:
-	SpatialTree();
-	SpatialTree(const vector<City*> cities);
-	~SpatialTree();
-	
-	bool AllVisited() const;
-	void ClearVisited();
-	queue<City*> GetKNearest(const City* city, int k);
-	int Count() const;
-	int Depth() const;
-	
-	void Print() const;
+    SpatialTree();
+
+    SpatialTree(const vector<City *> cities);
+
+    ~SpatialTree();
+
+    bool AllVisited() const;
+
+    void ClearVisited();
+
+    queue<City *> GetKNearest(const City *city, int k);
+
+    int Count() const;
+
+    int Depth() const;
+
+    void Print() const;
 };
 
 #endif

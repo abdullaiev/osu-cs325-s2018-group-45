@@ -17,7 +17,7 @@ using std::vector;
 using std::ofstream;
 using std::cout;
 
-Solution::Solution(long distance, vector <City *> tour) {
+Solution::Solution(long distance, vector<City *> tour) {
     this->distance = distance;
     this->tour = tour;
 }

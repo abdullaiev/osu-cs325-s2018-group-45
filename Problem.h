@@ -20,7 +20,9 @@ private:
 
 public:
     Problem(string inputFileName);
+
     vector<City *> getData();
+
     int getSize();
 };
 

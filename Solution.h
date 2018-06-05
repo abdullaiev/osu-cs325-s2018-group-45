@@ -22,6 +22,7 @@ private:
 
 public:
     Solution(long distance, vector<City *> tour);
+
     void write(string fileName);
 };
 

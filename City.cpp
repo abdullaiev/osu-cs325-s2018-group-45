@@ -14,35 +14,35 @@ using std::to_string;
 
 
 City::City(int id, int x, int y) {
-	this->id = id;
-	this->xCoord = x;
-	this->yCoord = y;
-	this->visited = false;
+    this->id = id;
+    this->xCoord = x;
+    this->yCoord = y;
+    this->visited = false;
 } //;
 
 string City::ToString() {
-	return /*"City " + to_string(id) + ": */"(" + to_string(xCoord) + ", " + to_string(yCoord) + ")";
-	
+    return /*"City " + to_string(id) + ": */"(" + to_string(xCoord) + ", " + to_string(yCoord) + ")";
+
 } //;
 
-bool City::CompareX(const City* lhs, const City* rhs){
-	return lhs->xCoord < rhs->xCoord;
+bool City::CompareX(const City *lhs, const City *rhs) {
+    return lhs->xCoord < rhs->xCoord;
 }
 
-bool City::CompareY(const City* lhs, const City* rhs){
-	return lhs->yCoord < rhs->yCoord;
+bool City::CompareY(const City *lhs, const City *rhs) {
+    return lhs->yCoord < rhs->yCoord;
 }
 
-bool City::CompareID(const City* lhs, const City* rhs){
-	return lhs->id < rhs->id;
+bool City::CompareID(const City *lhs, const City *rhs) {
+    return lhs->id < rhs->id;
 }
 
-int City::DistanceTo(const City* city) {
-	int xDiff = this->xCoord - city->xCoord;
-	int yDiff = this->yCoord - city->yCoord;
-	float dist = sqrt(xDiff*xDiff + yDiff*yDiff);
-	int distRound = round(dist);
-	return distRound;
+int City::DistanceTo(const City *city) {
+    int xDiff = this->xCoord - city->xCoord;
+    int yDiff = this->yCoord - city->yCoord;
+    float dist = sqrt(xDiff * xDiff + yDiff * yDiff);
+    int distRound = round(dist);
+    return distRound;
 
 /**
 	int xDiff = this->xCoord - city->xCoord;

@@ -21,8 +21,8 @@
 class SolveTSP {
 
 private:
-    std::vector <City*> tour;		// Will hold the final tour.  Used in NN and TwoOpt
-    std::vector <City*> tourSwap;
+    std::vector<City *> tour;  // Will hold the final tour.  Used in NN and TwoOpt
+    std::vector<City *> tourSwap;
 
 public:
 
@@ -30,19 +30,20 @@ public:
     SolveTSP();
 
     ~SolveTSP();
-    
+
     // called in Main.cpp
     Solution solve(Problem problem);   // going to call Problem and then solve using NN and 2-opt
     Solution solveNN(Problem problem);
 
-    void TwoOpt(std::vector<City*>&, int);		// Receives a Complete Tour, # of cities in tour.
-    void TwoOptSwap(std::vector<City*>&, int, int, int);
+    void TwoOpt(std::vector<City *> &, int);        // Receives a Complete Tour, # of cities in tour.
+    void TwoOptSwap(std::vector<City *> &, int, int, int);
 
-    int SegmentLength(const std::vector<City*>&, int, int);
+    int SegmentLength(const std::vector<City *> &, int, int);
 
 private:
-	void ReverseTour(std::vector<City*>& tour, int i, int k, int size);
-	void ReverseUtil(int&, int&, int);
+    void ReverseTour(std::vector<City *> &tour, int i, int k, int size);
+
+    void ReverseUtil(int &, int &, int);
 };
 
 #endif

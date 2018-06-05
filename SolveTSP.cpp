@@ -238,31 +238,24 @@ void SolveTSP::TwoOpt(std::vector<City*>& tour, int size)
   } 
   else
   { 
-    count = 500;
+    count = 1000;
   }
 
-  
+  int distanceBest = SegmentLength(tour, 0, size-1) +tour[size-1]->DistanceTo(tour[0]);
+  int distanceCur = distanceBest;
+  tourSwap = tour;
+
   // Keep Tyring to improve 2-OPT algorithm until improve value is reached...meh
-  while(improve <10){
-    for(int i=0; i<size-1; i++)
+  while(improve <40){
+    for(int i=1; i<size-2; i++)
     {
 	// Following For Loops do not create the wrap around indices, that is done in TwoOptSwap
 	// Swap with elements behind 
-	for(int k=1; k<count; k++)
-	{
+	for(int k=1; k<count-1; k++){
+
 	  TwoOptSwap(tour, i, i+k, size);
 	}     
 	
-	// Swap with elements ahead(only need this for counts>500?
-      /**
-      if(count >500)
-      {
-	for(int k=1; k<count; k++)
-	{
-	  TwoOptSwap(tour, i, i-k, size);
-	}
-      }
-      **/
     }
  
     // Display the Final Calculated Distance by 2-OPT, while also considering the distance home
@@ -272,7 +265,7 @@ void SolveTSP::TwoOpt(std::vector<City*>& tour, int size)
     std::cout << "TWO-OPT FINAL DISTANCE: " << distTotal << std::endl;
      
     improve++;
-  } //while loopy
+  }
 }
 
 
@@ -311,15 +304,26 @@ void SolveTSP::TwoOptSwap(std::vector<City*>& tour, int i, int k, int size)
   else
 	i1 = i-1;
 
+  // Compares only the edges
   lengthCur = (tour[i1]->DistanceTo(tour[i])) + (tour[k]->DistanceTo(tour[k1]));
   lengthSwp = (tour[i1]->DistanceTo(tour[k])) + (tour[i]->DistanceTo(tour[k1]));
+
+
+
+
+
 
   // If Edges before the swap are greater than after the potnetial swap, then perform the actual swap
   if(lengthCur > lengthSwp)
   {
-	//std::cout << "--- CALLING REVERSE ---" << std::endl;
 	ReverseTour(tour, i, k, size);
   }
+
+
+  //lengthSwp = SegmentLength(tour, 0, size-1) + tour[size-1]->DistanceTo(tour[0]);
+  //return lengthSwp; 
+
+
 }
 
 

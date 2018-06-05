@@ -21,7 +21,8 @@
 class SolveTSP {
 
 private:
-    std::vector <City*> tour;	// Will hold the final tour.  Used in NN and TwoOpt
+    std::vector <City*> tour;		// Will hold the final tour.  Used in NN and TwoOpt
+    std::vector <City*> tourSwap;
 
 public:
 

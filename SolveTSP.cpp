@@ -158,10 +158,6 @@ void SolveTSP::TwoOpt(vector<City*>& tour, int size) {
         count = 1000;
     }
 
-    int distanceBest = SegmentLength(tour, 0, size - 1) + tour[size - 1]->DistanceTo(tour[0]);
-    int distanceCur = distanceBest;
-    tourSwap = tour;
-
     // Keep Tyring to improve 2-OPT algorithm until improve value is reached...meh
     while (improve < 10) {
         for (int i = 1; i < size - 2; i++) {
@@ -262,7 +258,7 @@ void SolveTSP::ReverseUtil(int &i, int &k, int size) {
     }
 
     if (i > (size - 1)) {
-        i = i - size;  //or i-(size-1)-1;
+        i = i - size;  
     } else {
         i = i;
     }
@@ -281,7 +277,7 @@ int SolveTSP::SegmentLength(const vector<City*>& tour, int i, int k) {
         B = i;
     }
 
-    // NEED TO THINK ABOUT EDGE CASE OF WRAPPING AROUND VECTOR..
+    // Adding the segment of the vector that was passed in.   
     for (int z = A; z < B; z++) {
         segmentLength += tour[z]->DistanceTo(tour[z + 1]);
         //cout << tour.at(z)->id <<" to " << tour.at(z+1)->id <<" Distance: " << segmentLength << std::endl;
@@ -289,3 +285,4 @@ int SolveTSP::SegmentLength(const vector<City*>& tour, int i, int k) {
 
     return segmentLength;
 }
+

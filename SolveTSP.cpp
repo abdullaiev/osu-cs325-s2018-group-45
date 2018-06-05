@@ -232,7 +232,7 @@ void SolveTSP::TwoOpt(std::vector<City*>& tour, int size)
   int count = 0;
  
   // Used for Control on larger problems.  Only check neighbhorhood of 
-  if(size <= 500)
+  if(size <= 1000)
   {
     count = size;
   } 
@@ -246,7 +246,7 @@ void SolveTSP::TwoOpt(std::vector<City*>& tour, int size)
   tourSwap = tour;
 
   // Keep Tyring to improve 2-OPT algorithm until improve value is reached...meh
-  while(improve <40){
+  while(improve <10){
     for(int i=1; i<size-2; i++)
     {
 	// Following For Loops do not create the wrap around indices, that is done in TwoOptSwap
@@ -320,8 +320,6 @@ void SolveTSP::TwoOptSwap(std::vector<City*>& tour, int i, int k, int size)
   }
 
 
-  //lengthSwp = SegmentLength(tour, 0, size-1) + tour[size-1]->DistanceTo(tour[0]);
-
 
 
 }
@@ -353,7 +351,7 @@ void SolveTSP::ReverseTour(std::vector<City*>& tour, int i, int k, int size) {
   else if(i>k)
   {
     int steps = (size - abs(k-i))/2;
-    for(int z=0; z<steps; z++)
+    for(int z=0; z<=steps; z++)
     {
 	City* tmp = tour[i];
 	tour[i] = tour[k];
@@ -373,7 +371,7 @@ void SolveTSP::ReverseUtil(int &i, int &k, int size)
   // Make Indices Wrap Around
   if(k<0)
   {
-    k = (size-1)+k;
+    k = size+k;
   }
   else
     k = k;

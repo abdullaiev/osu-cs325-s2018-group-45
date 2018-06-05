@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
         inputFileName = argv[1];
     }
 
-    outputFileName = inputFileName + ".test-tour";
+    outputFileName = inputFileName + ".tour";
 
     //Measure algorithm performance
     clock_t start = clock();
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
         //Use Nearest Neighbor + 2-OPT for bigger problems
         srand(time(NULL));
         SolveTSP solveTSP;
-        solveTSP.solve(tsp).write(outputFileName + "_2OPT");
+        solveTSP.solve(tsp).write(outputFileName);
     }
 
     //Print execution time

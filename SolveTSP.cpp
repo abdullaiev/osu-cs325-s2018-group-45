@@ -169,57 +169,6 @@ Solution SolveTSP::solveNN(Problem problem) {
     return solution;
 }
 
-/******************
- * Verifies that the approximation made by NN is somewhat accurate
- * 	by checking the first few lenghts vs the last few lengths.
- * 	If lengths are greater than 25% different, then may want to 
- * 	choose a different starting point for NN
- *
- * ***************/
-
-bool SolveTSP::verifyApprox(const std::vector<City*>& tour, int size)
-{
-  bool check = true; //for debugging
-  bool verify = false;
-  int lengthBeg = 0;
-  int lengthEnd = 0;
-  int approxAve = 0;
- 
-
-  // Note: sizes under 10 will be run with the Exact Solution
-  if(size > 10)
-  {
-    for(int i=0; i<3; i++)
-    {    
-	lengthBeg += tour[i]->DistanceTo(tour[i+1]);
-    }
-    for(int i=size-1; i>size-4; i--)
-    {
-	lengthEnd += tour[i]->DistanceTo(tour[i-1]);
-    }
-    
-    // Verifies that the percentage difference is under 25 
-    approxAve = abs(lengthBeg-lengthEnd)/((lengthEnd+lengthBeg)/2)*100;
-
-    if(check){
-    	std::cout << "Beginning Lenght: " << lengthBeg << std::endl;
-    	std::cout << "Ending Length: " << lengthEnd << std::endl;
-    	std::cout << "Percentage: " << approxAve << std::endl;
-    }
-
-
-    if(approxAve < 25)
-    {
-	verify = true;
-    }
-
-  }
-
-  else {verify = true;}
-
-  return verify;
-}
-
 
 
 /*************   2-OPT IMPLEMENTATION **************/
@@ -311,15 +260,11 @@ void SolveTSP::TwoOptSwap(std::vector<City*>& tour, int i, int k, int size)
 
 
 
-
-
   // If Edges before the swap are greater than after the potnetial swap, then perform the actual swap
   if(lengthCur > lengthSwp)
   {
 	ReverseTour(tour, i, k, size);
   }
-
-
 
 
 }

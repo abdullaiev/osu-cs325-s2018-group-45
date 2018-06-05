@@ -35,7 +35,6 @@ public:
     Solution solve(Problem problem);   // going to call Problem and then solve using NN and 2-opt
     Solution solveNN(Problem problem);
 
-    bool verifyApprox(const std::vector<City*>&, int);
     void TwoOpt(std::vector<City*>&, int);		// Receives a Complete Tour, # of cities in tour.
     void TwoOptSwap(std::vector<City*>&, int, int, int);
 

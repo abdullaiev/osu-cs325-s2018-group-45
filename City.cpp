@@ -40,5 +40,14 @@ bool City::CompareID(const City* lhs, const City* rhs){
 int City::DistanceTo(const City* city) {
 	int xDiff = this->xCoord - city->xCoord;
 	int yDiff = this->yCoord - city->yCoord;
+	float dist = sqrt(xDiff*xDiff + yDiff*yDiff);
+	int distRound = round(dist);
+	return distRound;
+
+/**
+	int xDiff = this->xCoord - city->xCoord;
+	int yDiff = this->yCoord - city->yCoord;
 	return sqrt(xDiff*xDiff + yDiff*yDiff);
+**/
+
 }

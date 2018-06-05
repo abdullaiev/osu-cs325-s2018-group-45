@@ -321,7 +321,7 @@ void SolveTSP::TwoOptSwap(std::vector<City*>& tour, int i, int k, int size)
 
 
   //lengthSwp = SegmentLength(tour, 0, size-1) + tour[size-1]->DistanceTo(tour[0]);
-  //return lengthSwp; 
+
 
 
 }

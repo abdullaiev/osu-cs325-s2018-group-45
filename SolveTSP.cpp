@@ -21,7 +21,7 @@ using std::cout;
 using std::endl;
 
 /**************************************
- * Constructor and Destructor
+ * SolveTSP Class Constructor and Destructor
  * ************************************/
 
 SolveTSP::SolveTSP() {
@@ -32,8 +32,10 @@ SolveTSP::~SolveTSP() {
 
 }
 
-/**************************************
- * Internal Functions
+/***************************************
+ * 
+ * Description: 
+ *
  * ************************************/
 /* Going to Serve as the main solve function that brings together the solution */
 Solution SolveTSP::solve(Problem problem) {
@@ -57,6 +59,12 @@ Solution SolveTSP::solve(Problem problem) {
 
 //This function solves a TSP by using the Nearest Neighbor approach.
 //It starts from a random vertex, marks it as visited, and then finds the next nearest vertex until all vertices have been visited.
+/**************************************
+ *
+ * Description:
+ *
+ * ***********************************/
+
 Solution SolveTSP::solveNN(Problem problem) {
     int size = problem.getSize();
     vector < City * > allCities = problem.getData();
@@ -147,6 +155,12 @@ Solution SolveTSP::solveNN(Problem problem) {
 }
 
 /*************   2-OPT IMPLEMENTATION **************/
+
+/**************************************
+ *
+ * Description: 
+ *
+ * ***********************************/
 void SolveTSP::TwoOpt(vector<City*>& tour, int size) {
     int improve = 0;
     int count = 0;
@@ -177,24 +191,28 @@ void SolveTSP::TwoOpt(vector<City*>& tour, int size) {
     }
 }
 
-/******************
- * SWAPS and COMPARES EDGES
- *
- *
- * ***************/
+/**************************************
+ * 
+ * Description: Compares 2 edges, if being swapped in the tour
+ * 	yields a shorter distance, then the swap is performed on
+ * 	the main tour.
+ * 	 
+ *  Internal Function Calls: 
+ *  	- ReverseTour
+ * ************************************/
 void SolveTSP::TwoOptSwap(vector<City*>& tour, int i, int k, int size) {
     // Lengths of the current path segment and the swapped path segment
     long lengthCur = 0;
     long lengthSwp = 0;
 
-    // Making sure indices can wrap around
+    // Making sure indices can wrap around the vector
     if (k < 0) {
         k = (size - 1) + k;
     } else if (k > (size - 1)) {
         k = k - (size - 1) - 1;
     }
 
-    // Handles Edge Cases:
+    // Handles the Edge Cases:
     int k1, i1;
     if (k == size - 1)
         k1 = 0;
@@ -206,7 +224,7 @@ void SolveTSP::TwoOptSwap(vector<City*>& tour, int i, int k, int size) {
     else
         i1 = i - 1;
 
-    // Compares only the edges
+    // Adds together 2 edges for the current config & if edges were swapped.
     lengthCur = (tour[i1]->DistanceTo(tour[i])) + (tour[k]->DistanceTo(tour[k1]));
     lengthSwp = (tour[i1]->DistanceTo(tour[k])) + (tour[i]->DistanceTo(tour[k1]));
 
@@ -216,7 +234,18 @@ void SolveTSP::TwoOptSwap(vector<City*>& tour, int i, int k, int size) {
     }
 }
 
-// Switch the order of cities in an interval
+/**************************************
+ * 
+ * Description: Reverses the path travelled
+ * 	within a tour. 
+ *
+ * Note: Sensative to the order of passed in variables. 
+ * 	i and k are NOT interchangeable, but are the 
+ * 	starting and ending points of the section to be
+ * 	reversed.  DOES handle wrap around cases. 
+ *
+ * ***********************************/
+
 void SolveTSP::ReverseTour(vector<City*>& tour, int i, int k, int size) {
     //NOTE: Need to have two separate reverses (i is beginning, k is ending):
     //	1. i<k aka beg < end  then normal reverse
@@ -248,27 +277,52 @@ void SolveTSP::ReverseTour(vector<City*>& tour, int i, int k, int size) {
     }
 }
 
-/***** ReverseUtil ******/
+
+/**************************************
+ *
+ * Description: Takes care of any indices that
+ * 	go out of the vector bounds by wrapping
+ * 	them around.
+ *
+ * Note: This Utility Function only handles cases where
+ * 	k is always decrementing and i is always
+ * 	incrementing.
+ *
+ * ***********************************/
+
 void SolveTSP::ReverseUtil(int &i, int &k, int size) {
     // Make Indices Wrap Around
+
+    // Valid only when k is decrementing
     if (k < 0) {
         k = size + k;
     } else {
         k = k;
     }
-
+  
+    // Valid only when i is incrementing
     if (i > (size - 1)) {
         i = i - size;  
     } else {
         i = i;
     }
-
 }
 
-//Hmm maybe receive tour size so knows when to wrap around?
+
+/**************************************
+ *
+ * Description: Calculates the total distance between
+ * 	2 endpoints. This implementation handles undirected
+ * 	graphs that do NOT wrap around.  Will always take
+ * 	the smallest value and make it the starting point. 
+ *
+ * ***********************************/
+
 int SolveTSP::SegmentLength(const vector<City*>& tour, int i, int k) {
     int A, B;
     long segmentLength = 0;
+
+    // Always chooses the the smallest value as the starting point.
     if (i < k) {
         A = i;
         B = k;

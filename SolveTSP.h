@@ -22,7 +22,9 @@ class SolveTSP {
 
 private:
     std::vector<City *> tour;  					// Holds the final tour(used in NN and TwoOpt)
-
+    std::vector<City *> tourBest;
+    long distanceCur;
+    long distanceBest;
 public:
 
     // Constructor and Destructor

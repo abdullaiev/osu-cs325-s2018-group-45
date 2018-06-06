@@ -43,32 +43,73 @@ Solution SolveTSP::solve(Problem problem) {
     // 		maybe have it return a tour so it can just then be fed right into
     // 		the 2opt function call and if desired sent to a Solution Object (outside of solveNN)
 
-    Solution nnSolution = solveNN(problem);
+  int n = 0;
+  bool sizeCheck = true;  //checks the size of the input to determine how many loops
 
+  while(n <10)
+  {
+
+    tour.clear();
+    Solution nnSolution = solveNN(problem);
     int size = problem.getSize();
 
     cout << "solve: Problem size: " << size << endl;
-    cout << "solve: Tour size: " << tour.size() << endl;
+    //cout << "solve: Tour size: " << tour.size() << endl;
+
     TwoOpt(tour, size);
 
-    long dist = 0;
-    dist = SegmentLength(tour, 0, size - 1) + tour[size - 1]->DistanceTo(tour[0]);
+    distanceCur = 0;
+    distanceCur = SegmentLength(tour, 0, size - 1) + tour[size - 1]->DistanceTo(tour[0]);
 
-    return Solution(dist, tour);
+    // Loop Control
+    if(n == 0)
+    {
+	distanceBest = distanceCur;
+	tourBest = tour;
+    }
+
+    // CHeck the input Size. For certain sizes loop a certain amount of times
+    if(sizeCheck)
+    {
+	if(size > 2001 && size < 5001){
+	  n = 5;
+	  sizeCheck = false;
+	}
+	else if(size > 5001){
+	  n = 7;
+	  sizeCheck = false;
+	}
+	else{
+	  sizeCheck = false;
+	}
+    }
+    
+    // If the current implementation is a shorter distance, then keep it. 
+    if(distanceCur < distanceBest)
+    {
+	distanceBest = distanceCur;
+	tourBest = tour;
+    }
+
+    n++;
+  }
+  std::cout << "FINAL DISTANCE: " << distanceBest << std::endl;
+  return Solution(distanceBest, tourBest);
 }
 
-//This function solves a TSP by using the Nearest Neighbor approach.
-//It starts from a random vertex, marks it as visited, and then finds the next nearest vertex until all vertices have been visited.
+
 /**************************************
  *
- * Description:
+ * Description: Neartest Neighbor Algorithm.  Starts from a Random 
+ * 	Vertex, marks it as a visited, and then finds the next
+ * 	nearest vertex until all teh vertices have been visited.
  *
  * ***********************************/
 
 Solution SolveTSP::solveNN(Problem problem) {
     int size = problem.getSize();
     vector < City * > allCities = problem.getData();
-    bool NOISY = true;
+    bool NOISY = false;
 
     //If City Size is less than 500, run more times for better accuracy.
     int ATTEMPTS = size < 500 ? 20 : 5;
@@ -162,20 +203,19 @@ Solution SolveTSP::solveNN(Problem problem) {
  *
  * ***********************************/
 void SolveTSP::TwoOpt(vector<City*>& tour, int size) {
-    int improve = 0;
+    bool improve = true;
     int count = 0;
-
+    int distancePrev = 0;
     // Used for Control on larger problems.  Only check neighbhorhood of
-    if (size <= 1000) {
+    if (size <= 2000) {
         count = size;
     } else {
-        count = 1000;
+        count = 2000;
     }
 
     // Keep Tyring to improve 2-OPT algorithm until improve value is reached...meh
-    while (improve < 10) {
+    while (improve) {
         for (int i = 1; i < size - 2; i++) {
-            // Following For Loops do not create the wrap around indices, that is done in TwoOptSwap
             // Swap with elements behind
             for (int k = 1; k < count - 1; k++) {
                 TwoOptSwap(tour, i, i + k, size);
@@ -187,7 +227,12 @@ void SolveTSP::TwoOpt(vector<City*>& tour, int size) {
         long returnHome = tour[size - 1]->DistanceTo(tour[0]);
         long distTotal = dist2OPT + returnHome;
         cout << "TWO-OPT FINAL DISTANCE: " << distTotal << std::endl;
-        improve++;
+	if(distancePrev == distTotal){
+	  improve = false;
+	}
+	else{
+	  distancePrev = distTotal;
+	}
     }
 }
 

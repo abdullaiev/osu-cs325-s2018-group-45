@@ -53,7 +53,7 @@ Solution SolveTSP::solve(Problem problem) {
     Solution nnSolution = solveNN(problem);
     int size = problem.getSize();
 
-    cout << "solve: Problem size: " << size << endl;
+    //cout << "solve: Problem size: " << size << endl;
     //cout << "solve: Tour size: " << tour.size() << endl;
 
     TwoOpt(tour, size);
@@ -226,7 +226,7 @@ void SolveTSP::TwoOpt(vector<City*>& tour, int size) {
         long dist2OPT = SegmentLength(tour, 0, size - 1);
         long returnHome = tour[size - 1]->DistanceTo(tour[0]);
         long distTotal = dist2OPT + returnHome;
-        cout << "TWO-OPT FINAL DISTANCE: " << distTotal << std::endl;
+        //cout << "TWO-OPT FINAL DISTANCE: " << distTotal << std::endl;
 	if(distancePrev == distTotal){
 	  improve = false;
 	}

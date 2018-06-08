@@ -2,8 +2,9 @@
  * Group 45
  * CS 325 - Spring 2018
  * 
- *
- * Implementation for the SolveTSP class
+ * Implementation for the SolveTSP class.  Performs
+ * 	Nearest Neighbor and 2-OPT alogirthms to
+ * 	find the shortest distance for the TSP Problem.
  * *********************/
 
 #include <math.h>
@@ -33,22 +34,23 @@ SolveTSP::~SolveTSP() {
 }
 
 /***************************************
- * 
- * Description: 
+ * Description: Solves the TSP Problem by parsing the data into a tree,
+ * 	Running Nearest Neighbor multiple times and choosing the best,
+ * 	Send the best tour result from Nearest Neighbor to the 2-OPT
+ * 	Algorithm, which runs until it converges on a value, and finally
+ * 	writes the results to a file.
  *
  * ************************************/
 /* Going to Serve as the main solve function that brings together the solution */
 Solution SolveTSP::solve(Problem problem) {
-    // Nearest Neighbor currently returns a Solution, but when 2OPT is working
-    // 		maybe have it return a tour so it can just then be fed right into
-    // 		the 2opt function call and if desired sent to a Solution Object (outside of solveNN)
 
   int n = 0;
   bool sizeCheck = true;  //checks the size of the input to determine how many loops
 
+  // Max iterations of 10, but will be less depending on the input size
   while(n <10)
   {
-
+    // Clear the current tour and Run Nearest Neighbor 
     tour.clear();
     Solution nnSolution = solveNN(problem);
     int size = problem.getSize();
@@ -56,19 +58,21 @@ Solution SolveTSP::solve(Problem problem) {
     //cout << "solve: Problem size: " << size << endl;
     //cout << "solve: Tour size: " << tour.size() << endl;
 
+    // Run 2-Opt Algorithm
     TwoOpt(tour, size);
 
+    // Find the total distance(though a bit redundant since it calcs in 2-opt..)
     distanceCur = 0;
     distanceCur = SegmentLength(tour, 0, size - 1) + tour[size - 1]->DistanceTo(tour[0]);
 
-    // Loop Control
+    // Set the first iteration equal to the best tour and distance
     if(n == 0)
     {
 	distanceBest = distanceCur;
 	tourBest = tour;
     }
 
-    // CHeck the input Size. For certain sizes loop a certain amount of times
+    // Loop Control: Check the input Size and set the number of loops accordingly
     if(sizeCheck)
     {
 	if(size > 2001 && size < 5001){
@@ -93,13 +97,13 @@ Solution SolveTSP::solve(Problem problem) {
 
     n++;
   }
+
   std::cout << "FINAL DISTANCE: " << distanceBest << std::endl;
   return Solution(distanceBest, tourBest);
 }
 
 
 /**************************************
- *
  * Description: Neartest Neighbor Algorithm.  Starts from a Random 
  * 	Vertex, marks it as a visited, and then finds the next
  * 	nearest vertex until all teh vertices have been visited.
@@ -189,17 +193,22 @@ Solution SolveTSP::solveNN(Problem problem) {
         }
     }
 
-    cout << "NN finished. Final shortest distance: " << shortestDistance << ". Double check tour size: "
-         << this->tour.size() << ".\n";
+    //cout << "NN finished. Final shortest distance: " << shortestDistance << ". Double check tour size: "
+    //     << this->tour.size() << ".\n";
     Solution solution(shortestDistance, this->tour);
     return solution;
 }
 
-/*************   2-OPT IMPLEMENTATION **************/
 
 /**************************************
+ * Description: 2-OPT Algorithm, a specific type of K-OPT,
+ * 	that rearranges 2 edges to see if the swap produces
+ * 	a better result.  If it does, then the swap is 
+ * 	made.
  *
- * Description: 
+ * Internal Function Calls:
+ * 	- TwoOptSwap
+ * 	- SegmentLength
  *
  * ***********************************/
 void SolveTSP::TwoOpt(vector<City*>& tour, int size) {
@@ -213,10 +222,10 @@ void SolveTSP::TwoOpt(vector<City*>& tour, int size) {
         count = 2000;
     }
 
-    // Keep Tyring to improve 2-OPT algorithm until improve value is reached...meh
+    // Keep Tyring to improve 2-OPT algorithm until it no longer converges (previous distance = current distance)
     while (improve) {
         for (int i = 1; i < size - 2; i++) {
-            // Swap with elements behind
+            // Compare Edges and swap if yielding a better result
             for (int k = 1; k < count - 1; k++) {
                 TwoOptSwap(tour, i, i + k, size);
             }
@@ -236,8 +245,8 @@ void SolveTSP::TwoOpt(vector<City*>& tour, int size) {
     }
 }
 
+
 /**************************************
- * 
  * Description: Compares 2 edges, if being swapped in the tour
  * 	yields a shorter distance, then the swap is performed on
  * 	the main tour.
@@ -279,8 +288,8 @@ void SolveTSP::TwoOptSwap(vector<City*>& tour, int i, int k, int size) {
     }
 }
 
+
 /**************************************
- * 
  * Description: Reverses the path travelled
  * 	within a tour. 
  *
@@ -290,7 +299,6 @@ void SolveTSP::TwoOptSwap(vector<City*>& tour, int i, int k, int size) {
  * 	reversed.  DOES handle wrap around cases. 
  *
  * ***********************************/
-
 void SolveTSP::ReverseTour(vector<City*>& tour, int i, int k, int size) {
     //NOTE: Need to have two separate reverses (i is beginning, k is ending):
     //	1. i<k aka beg < end  then normal reverse
@@ -324,7 +332,6 @@ void SolveTSP::ReverseTour(vector<City*>& tour, int i, int k, int size) {
 
 
 /**************************************
- *
  * Description: Takes care of any indices that
  * 	go out of the vector bounds by wrapping
  * 	them around.
@@ -334,7 +341,6 @@ void SolveTSP::ReverseTour(vector<City*>& tour, int i, int k, int size) {
  * 	incrementing.
  *
  * ***********************************/
-
 void SolveTSP::ReverseUtil(int &i, int &k, int size) {
     // Make Indices Wrap Around
 
@@ -355,14 +361,12 @@ void SolveTSP::ReverseUtil(int &i, int &k, int size) {
 
 
 /**************************************
- *
  * Description: Calculates the total distance between
  * 	2 endpoints. This implementation handles undirected
  * 	graphs that do NOT wrap around.  Will always take
  * 	the smallest value and make it the starting point. 
  *
  * ***********************************/
-
 int SolveTSP::SegmentLength(const vector<City*>& tour, int i, int k) {
     int A, B;
     long segmentLength = 0;

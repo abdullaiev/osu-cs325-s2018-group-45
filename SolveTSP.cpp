@@ -3,7 +3,7 @@
  * CS 325 - Spring 2018
  * 
  * Implementation for the SolveTSP class.  Performs
- * 	Nearest Neighbor and 2-OPT alogirthms to
+ * 	Nearest Neighbor and 2-OPT algorithms to
  * 	find the shortest distance for the TSP Problem.
  * *********************/
 
@@ -14,8 +14,6 @@
 #include <cstdlib>
 
 #include "SolveTSP.h"
-#include "SpatialTree.h"
-#include "Problem.h"
 
 using std::vector;
 using std::cout;
@@ -42,7 +40,7 @@ SolveTSP::~SolveTSP() {
  *
  * ************************************/
 /* Going to Serve as the main solve function that brings together the solution */
-Solution SolveTSP::solve(Problem problem) {
+Solution SolveTSP::solve(const Problem& problem) {
 
   int n = 0;
   bool sizeCheck = true;  //checks the size of the input to determine how many loops
@@ -110,7 +108,7 @@ Solution SolveTSP::solve(Problem problem) {
  *
  * ***********************************/
 
-Solution SolveTSP::solveNN(Problem problem) {
+Solution SolveTSP::solveNN(const Problem& problem) {
     int size = problem.getSize();
     vector < City * > allCities = problem.getData();
     bool NOISY = false;
@@ -293,7 +291,7 @@ void SolveTSP::TwoOptSwap(vector<City*>& tour, int i, int k, int size) {
  * Description: Reverses the path travelled
  * 	within a tour. 
  *
- * Note: Sensative to the order of passed in variables. 
+ * Note: Sensitive to the order of passed in variables. 
  * 	i and k are NOT interchangeable, but are the 
  * 	starting and ending points of the section to be
  * 	reversed.  DOES handle wrap around cases. 

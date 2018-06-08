@@ -1,9 +1,11 @@
-/****************************************
+/***********************************************
  * Group 45
  * CS 325 - Spring 2018
  *
- * Implementation for the Problem class
- ****************************************/
+ * Implementation for the Problem class.
+ * Represents a TSP problem as an array of cities
+ * read in from a text file in a specific format
+ **********************************************/
 
 #include <string>
 #include <vector>
@@ -22,6 +24,11 @@ using std::istringstream;
 using std::istream_iterator;
 using std::cout;
 
+// Reads in the problem definition from a file containing one line for 
+// each city, with the ID, x and y listed in that order. The problem 
+// class owns the memory storing the city objects.  It should be passed
+// by reference because we didn't implement a copy constructor. 
+// Deleting the problem will delete the cities from the heap.
 Problem::Problem(string inputFileName) {
     bool status = true;
     vector < City * > cities;
@@ -58,10 +65,20 @@ Problem::Problem(string inputFileName) {
     }
 }
 
-vector<City *> Problem::getData() {
+// Free up the memory allocated for storing cities
+Problem::~Problem() {
+	for (int i = 0; i < this->cities.size(); ++i) {
+		if (cities[i])
+			delete cities[i];
+	}
+}
+
+// Returns a copy of the array of pointers to cities. The actually city 
+// data is not duplicated to a new memory location
+vector<City *> Problem::getData() const {
     return this->cities;
 }
 
-int Problem::getSize() {
+int Problem::getSize() const {
     return this->cities.size();
 }

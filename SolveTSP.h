@@ -17,7 +17,6 @@
 #include <vector>
 
 #include "City.h"
-#include "Node.h"
 #include "Solution.h"
 #include "Problem.h"
 
@@ -36,10 +35,10 @@ public:
     ~SolveTSP();
 
     // called in Main.cpp
-    Solution solve(Problem problem);   				// Calls Problem and solves using NN and 2-opt
+    Solution solve(const Problem& problem);   				// Calls Problem and solves using NN and 2-opt
 
     // Internal Functions
-    Solution solveNN(Problem problem);				// Performs the Nearest Neighbor Algorithm
+    Solution solveNN(const Problem& problem);				// Performs the Nearest Neighbor Algorithm
     void TwoOpt(std::vector<City *> &, int);        		// Performs the 2-OPT Algorithm
     void TwoOptSwap(std::vector<City *> &, int, int, int);	// Swaps 2 Edges and Checks if the path is shorter
     int SegmentLength(const std::vector<City *> &, int, int);	// Returns Distance of a path

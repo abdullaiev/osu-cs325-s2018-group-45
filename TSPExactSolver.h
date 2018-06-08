@@ -17,7 +17,7 @@ using std::string;
 
 class TSPExactSolver {
 public:
-    Solution solve(Problem problem);
+    Solution solve(const Problem& problem);
 };
 
 #endif //OSU_CS325_S2018_GROUP_45_TSPEXACTSOLVER_H

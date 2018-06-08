@@ -1,14 +1,14 @@
-/****************************
+/***********************************************************
  * Group 45
  * CS 325 - Spring 2018
  *
  * Description:
  *
- *
- * **************************/
-
-
-
+ * Solves a TSP problem specified in a file, a path
+ * to which is provided as the only argument.
+ * An exact or appx solver is used, depending on the problem
+ * size and the solution is written to an output file.
+ * *********************************************************/
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -16,11 +16,10 @@
 #include <ctime>
 #include <stdlib.h>
 
-#include "Node.h"
 #include "City.h"
 #include "Problem.h"
-#include "SolveTSP.h"
 #include "Solution.h"
+#include "SolveTSP.h"
 #include "TSPExactSolver.h"
 
 using std::endl;
@@ -31,7 +30,10 @@ using std::string;
 using std::cout;
 using std::cin;
 
-
+// The only argument (excluding the program argument) is the problem definition
+// file path. The user is prompted to manually enter the file path if none is provided.
+// The solution file is the input file name with '.tour' appended.
+// The exact solver is used for problems under 10 cities, otherwise the appx solver is used.
 int main(int argc, char *argv[]) {
     string inputFileName;
     string outputFileName;

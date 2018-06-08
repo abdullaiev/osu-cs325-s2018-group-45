@@ -21,7 +21,7 @@ using std::next_permutation;
 //This function solves the TSP with a brute force approach. It generates all permutations of the vertices in the graph
 //and finds the one the yields a path with the minimum distance.
 //Danger: This functions runs in O(n!) time and should not be used for inputs with 10 or more vertices.
-Solution TSPExactSolver::solve(Problem problem) {
+Solution TSPExactSolver::solve(const Problem& problem) {
     int size = problem.getSize();
     int * indices;
     indices = new int[size];

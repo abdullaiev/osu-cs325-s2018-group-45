@@ -2,7 +2,11 @@
  * Group 45
  * CS 325 - Spring 2018 
  *
- * Interface for SolveTSP class
+ * Interface for SolveTSP class.  Calls a function to Parse 
+ * 	an input file and then implements Nearest Neighbor 
+ * 	and 2-OPT Algorithms to solve the TSP Problem.
+ * 	Finally sends the data to Solutions class to 
+ * 	write the results to a file.
  *
  * ********************************/
 

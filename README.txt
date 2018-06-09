@@ -18,3 +18,4 @@ Usage: 'SolveTSP <file_path>', where <file_path> is the path of a problem file
 - The solution will be written at the location of the problem file with the same name, but appended by '.tour'. It will contain the tour length and ID order.
 - If no argument is provided, the user will be prompted to enter the file path
 
+*Solutions to example and competition problems are in the 'solutions' folder
